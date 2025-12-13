@@ -10,7 +10,11 @@ export default function Header() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    // Schedule state update for next tick to avoid synchronous setState warning
+    const timer = setTimeout(() => {
+      setMounted(true);
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const navLinks = [
@@ -18,6 +22,7 @@ export default function Header() {
     { href: '/dashboard', label: 'Dashboard' },
     { href: '/transactions', label: 'Transactions' },
     { href: '/verticals', label: 'Verticals' },
+    { href: '/projects', label: 'Projects' },
     { href: '/planning', label: 'Planning' },
     { href: '/docs', label: 'Docs' },
   ];

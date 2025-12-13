@@ -1,16 +1,58 @@
 import { NextResponse } from 'next/server';
 import { Transaction } from '@/lib/types';
 import Papa from 'papaparse';
-import { parseNumber, calculateTotalSpend, parseDate, calculateMetrics, detectTransactionType, convertHiveToHbd, calculateWalletTotals } from '@/lib/utils/data';
+import { parseNumber, calculateTotalSpend, parseDate, calculateMetrics, detectTransactionType } from '@/lib/utils/data';
 import { getSheetsCsvUrl, SHEET_TABS } from '@/lib/utils/sheets';
 import { getEventRefundsAsTransactions } from '@/lib/data/event-refunds';
 import { getLoansAsTransactions } from '@/lib/data/loans';
 import { getLoanRefundsAsTransactions } from '@/lib/data/loan-refunds';
+import { getAccountTransfersViaSQL } from '@/lib/utils/hive';
 
 const SHEETS_CSV_URL = getSheetsCsvUrl(SHEET_TABS.TRANSACTIONS);
+const DEFAULT_ACCOUNT = 'valueplan';
+const DEFAULT_YEAR = 2025;
 
-export async function GET(): Promise<NextResponse> {
+/**
+ * Metrics API - Uses HiveSQL as source of truth for totals
+ * Google Sheets provides metadata for breakdowns (categories, countries, etc.)
+ * Loans and refunds tracked separately
+ */
+export async function GET(request: Request): Promise<NextResponse> {
   try {
+    const { searchParams } = new URL(request.url);
+    const year = parseInt(searchParams.get('year') || String(DEFAULT_YEAR), 10);
+
+    // 1. Get accurate totals from HiveSQL (source of truth) - fetch directly from HiveSQL
+    const startDate = new Date(`${year}-01-01T00:00:00.000Z`);
+    const endDate = new Date(`${year}-12-31T23:59:59.999Z`);
+    
+    let hiveSQLOutgoingHBD = 0;
+    let hiveSQLOutgoingHIVE = 0;
+    
+    try {
+      console.log(`Fetching HiveSQL transfers for ${year}...`);
+      const hiveSQLTransfers = await getAccountTransfersViaSQL(DEFAULT_ACCOUNT, startDate, endDate);
+      
+      // Filter to outgoing transfers only (from valueplan)
+      const outgoingTransfers = hiveSQLTransfers.filter(t => 
+        t.from.toLowerCase() === DEFAULT_ACCOUNT.toLowerCase()
+      );
+      
+      hiveSQLOutgoingHBD = outgoingTransfers
+        .filter(t => t.currency === 'HBD')
+        .reduce((sum, t) => sum + t.amountValue, 0);
+      
+      hiveSQLOutgoingHIVE = outgoingTransfers
+        .filter(t => t.currency === 'HIVE')
+        .reduce((sum, t) => sum + t.amountValue, 0);
+      
+      console.log(`✅ HiveSQL totals: HBD: ${hiveSQLOutgoingHBD.toFixed(2)}, HIVE: ${hiveSQLOutgoingHIVE.toFixed(2)}`);
+    } catch (error) {
+      console.warn('Could not fetch HiveSQL data, falling back to Google Sheets only:', error);
+      // Continue with Google Sheets data if HiveSQL fails
+    }
+
+    // 2. Get Google Sheets data for metadata and breakdowns
     const response = await fetch(SHEETS_CSV_URL, {
       next: { revalidate: 3600 },
     });
@@ -23,13 +65,13 @@ export async function GET(): Promise<NextResponse> {
     
     return new Promise<NextResponse>((resolve, reject) => {
       Papa.parse(csvText, {
-        header: false, // Parse without headers first to find the actual header row
+        header: false,
         skipEmptyLines: true,
         complete: (results) => {
           try {
             const rows: string[][] = results.data as string[][];
             
-            // Find the header row - look for "Wallet" or "Date" in the first few rows
+            // Find the header row
             let headerRowIndex = -1;
             for (let i = 0; i < Math.min(10, rows.length); i++) {
               const row = rows[i];
@@ -43,7 +85,6 @@ export async function GET(): Promise<NextResponse> {
             }
 
             if (headerRowIndex === -1) {
-              // Try to find by looking for "Date" column
               for (let i = 0; i < Math.min(10, rows.length); i++) {
                 const row = rows[i];
                 if (row && row.some(cell => String(cell || '').toLowerCase().trim() === 'date')) {
@@ -54,7 +95,6 @@ export async function GET(): Promise<NextResponse> {
             }
 
             if (headerRowIndex === -1) {
-              console.error('Could not find header row. First few rows:', rows.slice(0, 5));
               return reject(NextResponse.json({ 
                 error: 'Could not find header row in CSV',
                 debug: { firstRows: rows.slice(0, 5) }
@@ -64,10 +104,8 @@ export async function GET(): Promise<NextResponse> {
             const headerRow = rows[headerRowIndex];
             const headerMap: Record<string, number> = {};
             
-            // Map header names to column indices
             headerRow.forEach((header, index) => {
               const headerLower = String(header || '').toLowerCase().trim();
-              // Use more specific matching to avoid conflicts
               if (headerLower === 'wallet' || headerLower.includes('wallet')) {
                 if (!headerMap['wallet']) headerMap['wallet'] = index;
               } else if (headerLower === 'date' || headerLower.includes('date')) {
@@ -93,17 +131,14 @@ export async function GET(): Promise<NextResponse> {
               }
             });
 
-            // Check if we found essential columns
             if (headerMap['wallet'] === undefined || headerMap['date'] === undefined) {
-              console.error('Missing essential columns. Header row:', headerRow);
-              console.error('Header map:', headerMap);
               return reject(NextResponse.json({ 
                 error: 'Missing essential columns (Wallet or Date)',
                 debug: { headerRow, headerMap }
               }, { status: 500 }));
             }
 
-            // Parse data rows (skip header row and any summary rows)
+            // Parse transactions from Google Sheets (for metadata/breakdowns)
             const transactions: Transaction[] = [];
             
             for (let i = headerRowIndex + 1; i < rows.length; i++) {
@@ -113,10 +148,8 @@ export async function GET(): Promise<NextResponse> {
               const wallet = String(row[headerMap['wallet']] || '').trim();
               const date = String(row[headerMap['date']] || '').trim();
 
-              // Skip rows without wallet or date
               if (!wallet || !date) continue;
 
-              // Skip summary/total rows
               const walletLower = wallet.toLowerCase();
               const dateLower = date.toLowerCase();
               if (walletLower === 'total' || 
@@ -128,25 +161,21 @@ export async function GET(): Promise<NextResponse> {
                 continue;
               }
 
-              // Skip if date looks like a header (contains "Date" and no numbers)
               if (dateLower.includes('date') && !dateLower.match(/\d/)) {
                 continue;
               }
 
-              // Try to parse the date - be more lenient
               let parsedDate: Date | null = null;
               try {
                 parsedDate = parseDate(date);
-                // Check if date is reasonable (between 2020 and 2030)
-                const year = parsedDate.getFullYear();
-                if (year < 2020 || year > 2030) {
+                const yearValue = parsedDate.getFullYear();
+                if (yearValue < 2020 || yearValue > 2030) {
                   continue;
                 }
               } catch {
                 continue;
               }
 
-              // Get HBD, Hive, and Hive To HBD values - handle missing columns gracefully
               const hbdIndex = headerMap['hbd'];
               const hiveIndex = headerMap['hive'];
               const hiveToHbdIndex = headerMap['hiveToHbd'];
@@ -154,7 +183,6 @@ export async function GET(): Promise<NextResponse> {
               const hive = hiveIndex !== undefined ? parseNumber(row[hiveIndex] || 0) : 0;
               const hiveToHbd = hiveToHbdIndex !== undefined ? parseNumber(row[hiveToHbdIndex] || 0) : undefined;
 
-              // Include rows with data even if amounts are zero (might have other info)
               if (hbd === 0 && hive === 0) {
                 const hasOtherData = row[headerMap['eventProject']] || 
                                     row[headerMap['country']] || 
@@ -174,10 +202,9 @@ export async function GET(): Promise<NextResponse> {
                 theme: String(row[headerMap['theme']] || '').trim(),
                 eventType: String(row[headerMap['eventType']] || '').trim(),
                 category: String(row[headerMap['category']] || '').trim(),
-                hiveToHbd, // Use actual Hive To HBD value from spreadsheet
+                hiveToHbd,
               };
 
-              // Detect transaction type (loan, refund, loan refund)
               const transactionType = detectTransactionType(transaction);
               transaction.isLoan = transactionType.isLoan;
               transaction.isRefund = transactionType.isRefund;
@@ -187,103 +214,126 @@ export async function GET(): Promise<NextResponse> {
               transactions.push(transaction);
             }
 
-            console.log(`Metrics: Parsed ${transactions.length} transactions from CSV`);
+            // Calculate breakdowns from Google Sheets (for categories, countries, etc.)
+            const sheetsMetrics = calculateMetrics(transactions, year);
             
-            // Add loans to transactions (money given out)
-            const loans = getLoansAsTransactions();
-            console.log(`Metrics: Adding ${loans.length} loans`);
-            const totalLoansAmount = loans.reduce((sum, l) => sum + (l.hbd || 0) + (l.hive || 0) * 0.24, 0);
-            console.log(`Metrics: Total loans amount: ${totalLoansAmount.toFixed(2)} HBD equivalent`);
-            transactions.push(...loans);
-            
-            // Add loan refunds to transactions (repayments received)
-            const loanRefunds = getLoanRefundsAsTransactions();
-            console.log(`Metrics: Adding ${loanRefunds.length} loan refunds`);
-            const totalLoanRefundsAmount = loanRefunds.reduce((sum, r) => sum + (r.hbd || 0) + (r.hive || 0) * 0.24, 0);
-            console.log(`Metrics: Total loan refunds amount: ${totalLoanRefundsAmount.toFixed(2)} HBD equivalent`);
-            transactions.push(...loanRefunds);
-            
-            // Add event refunds to transactions
-            const eventRefunds = getEventRefundsAsTransactions();
-            console.log(`Metrics: Adding ${eventRefunds.length} event refunds`);
-            const totalEventRefundsAmount = eventRefunds.reduce((sum, r) => sum + (r.hbd || 0), 0);
-            console.log(`Metrics: Total event refunds amount: ${totalEventRefundsAmount.toFixed(2)} HBD`);
-            transactions.push(...eventRefunds);
-            console.log(`Metrics: Total transactions after adding loans, loan refunds, and event refunds: ${transactions.length}`);
-            
-            // Debug: Verify ssekulji transactions for 2025 (rally car account)
-            const ssekuljiTotals = calculateWalletTotals(transactions, 'ssekulji', { year: 2025 });
-            
-            if (ssekuljiTotals.transactionCount > 0) {
-              console.log(`\n=== SSEKULJI (Rally Car) Transactions for 2025 ===`);
-              console.log(`Found ${ssekuljiTotals.transactionCount} transactions:`);
-              
-              ssekuljiTotals.transactions.forEach(tx => {
-                const hbd = tx.hbd || 0;
-                const hive = tx.hive || 0;
-                const hiveInHbd = tx.hiveToHbd !== undefined ? tx.hiveToHbd : (hive ? convertHiveToHbd(hive) : 0);
-                const total = calculateTotalSpend(tx);
-                
-                console.log(`  - ${tx.date}: ${tx.eventProject || 'N/A'} | ${tx.category || 'N/A'} | ${hbd.toFixed(2)} HBD + ${hive.toFixed(2)} HIVE (${hiveInHbd.toFixed(2)} HBD equiv) | Total: ${total.toFixed(2)} HBD`);
-              });
-              
-              console.log(`\nSummary:`);
-              console.log(`  Total HBD: ${ssekuljiTotals.totalHbd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} HBD`);
-              console.log(`  Total HIVE: ${ssekuljiTotals.totalHive.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} HIVE`);
-              console.log(`  HIVE in HBD equivalent: ${ssekuljiTotals.totalHiveInHbd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} HBD`);
-              console.log(`  GRAND TOTAL: ${ssekuljiTotals.grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} HBD`);
-              console.log(`  Expected: 392,637.58 HBD`);
-              console.log(`  Difference: ${(ssekuljiTotals.grandTotal - 392637.58).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} HBD`);
-              console.log(`================================================\n`);
-            } else {
-              console.log('No ssekulji transactions found for 2025. Searching for variations...');
-              // Try to find transactions that might be ssekulji with different casing or format
-              const possibleSsekulji = transactions.filter(tx => {
-                const walletLower = tx.wallet.toLowerCase().replace('@', '').trim();
-                return walletLower.includes('ssekulji') || walletLower.includes('sekulji');
-              });
-              if (possibleSsekulji.length > 0) {
-                console.log(`Found ${possibleSsekulji.length} possible ssekulji transactions (checking all years):`);
-                possibleSsekulji.slice(0, 5).forEach(tx => {
-                  console.log(`  - ${tx.date}: ${tx.wallet} | ${tx.hbd || 0} HBD + ${tx.hive || 0} HIVE`);
-                });
+            // Get loans and refunds data
+            const loans = getLoansAsTransactions().filter(t => {
+              try {
+                return parseDate(t.date).getFullYear() === year;
+              } catch {
+                return false;
               }
-            }
-            
-            // Debug: Find rally car related transactions
-            const rallyCarTransactions = transactions.filter(tx => {
-              const searchText = `${tx.wallet} ${tx.eventProject} ${tx.category} ${tx.eventType}`.toLowerCase();
-              return searchText.includes('rally');
             });
-            
-            if (rallyCarTransactions.length > 0) {
-              console.log(`Found ${rallyCarTransactions.length} rally car related transactions:`);
-              rallyCarTransactions.forEach(tx => {
-                console.log(`  - ${tx.date}: ${tx.eventProject || 'N/A'} | Category: ${tx.category || 'N/A'} | Amount: ${tx.hbd || 0} HBD + ${tx.hive || 0} HIVE (${tx.hiveToHbd || 0} HBD equiv) | Total: ${calculateTotalSpend(tx)} HBD`);
-              });
-              const rallyCarTotal = rallyCarTransactions.reduce((sum, tx) => sum + calculateTotalSpend(tx), 0);
-              console.log(`Total rally car spending: ${rallyCarTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} HBD`);
-            } else {
-              console.log('No rally car related transactions found. Searching for variations...');
-              // Try to find transactions that might be rally car related
-              const possibleRally = transactions.filter(tx => {
-                const searchText = `${tx.wallet} ${tx.eventProject} ${tx.category}`.toLowerCase();
-                return searchText.includes('wrc') || searchText.includes('race') || searchText.includes('car');
-              });
-              if (possibleRally.length > 0) {
-                console.log(`Found ${possibleRally.length} possible rally/racing related transactions`);
+
+            const loanRefunds = getLoanRefundsAsTransactions().filter(t => {
+              try {
+                return parseDate(t.date).getFullYear() === year;
+              } catch {
+                return false;
               }
-            }
+            });
+
+            const eventRefunds = getEventRefundsAsTransactions().filter(t => {
+              try {
+                return parseDate(t.date).getFullYear() === year;
+              } catch {
+                return false;
+              }
+            });
+
+            // Calculate loan/refund totals
+            const totalLoansHbd = loans.reduce((sum, l) => sum + l.hbd, 0);
+            const totalLoansHive = loans.reduce((sum, l) => sum + l.hive, 0);
+            const totalLoanRefundsHbd = loanRefunds.reduce((sum, r) => sum + r.hbd, 0);
+            const totalLoanRefundsHive = loanRefunds.reduce((sum, r) => sum + r.hive, 0);
+            const totalRefundsHbd = eventRefunds.reduce((sum, r) => sum + r.hbd, 0);
+            const totalRefundsHive = eventRefunds.reduce((sum, r) => sum + r.hive, 0);
+
+            // Calculate HIVE to HBD equivalents
+            const conversionRate = 0.24; // 2025 average rate
+            const totalLoansHbdEquivalent = totalLoansHbd + (totalLoansHive * conversionRate);
+            const totalLoanRefundsHbdEquivalent = totalLoanRefundsHbd + (totalLoanRefundsHive * conversionRate);
+            const totalRefundsHbdEquivalent = totalRefundsHbd + (totalRefundsHive * conversionRate);
+
+            // Use HiveSQL totals as source of truth (if available), otherwise use Google Sheets
+            const totalHbd = hiveSQLOutgoingHBD > 0 ? hiveSQLOutgoingHBD : sheetsMetrics.totalHbd;
+            const totalHive = hiveSQLOutgoingHIVE > 0 ? hiveSQLOutgoingHIVE : sheetsMetrics.totalHive;
             
-            // Calculate metrics for 2025 to match verticals and executive summary
-            const metrics = calculateMetrics(transactions, 2025);
-            
-            console.log(`\n=== METRICS (2025) ===`);
-            console.log(`Total HBD: ${metrics.totalHbd.toFixed(2)} HBD`);
-            console.log(`Total Hive: ${metrics.totalHive.toFixed(2)} HIVE`);
-            console.log(`Combined Total (HBD equivalent): ${metrics.combinedTotalHbd.toFixed(2)} HBD`);
-            console.log(`=====================\n`);
-            
+            // Calculate combined total (HIVE converted to HBD)
+            const hiveInHbd = totalHive * conversionRate;
+            const combinedTotalHbd = totalHbd + hiveInHbd;
+
+            // Scale breakdowns proportionally if HiveSQL totals differ significantly from Google Sheets
+            // (to account for the 3 missing transactions)
+            const hbdScaleFactor = hiveSQLOutgoingHBD > 0 && sheetsMetrics.totalHbd > 0 
+              ? hiveSQLOutgoingHBD / sheetsMetrics.totalHbd 
+              : 1;
+            // Note: We scale HBD amounts proportionally; HIVE conversion is handled separately
+            // const hiveScaleFactor = hiveSQLOutgoingHIVE > 0 && sheetsMetrics.totalHive > 0
+            //   ? hiveSQLOutgoingHIVE / sheetsMetrics.totalHive
+            //   : 1;
+
+            // Scale spending breakdowns to match HiveSQL totals
+            const scaledSpendingByCategory: Record<string, number> = {};
+            Object.entries(sheetsMetrics.spendingByCategory).forEach(([key, value]) => {
+              scaledSpendingByCategory[key] = value * hbdScaleFactor;
+            });
+
+            const scaledSpendingByCountry: Record<string, number> = {};
+            Object.entries(sheetsMetrics.spendingByCountry).forEach(([key, value]) => {
+              scaledSpendingByCountry[key] = value * hbdScaleFactor;
+            });
+
+            const scaledSpendingByEventType: Record<string, number> = {};
+            Object.entries(sheetsMetrics.spendingByEventType).forEach(([key, value]) => {
+              scaledSpendingByEventType[key] = value * hbdScaleFactor;
+            });
+
+            const scaledSpendingByEventProject: Record<string, number> = {};
+            Object.entries(sheetsMetrics.spendingByEventProject).forEach(([key, value]) => {
+              scaledSpendingByEventProject[key] = value * hbdScaleFactor;
+            });
+
+            const scaledSpendingByWallet: Record<string, number> = {};
+            Object.entries(sheetsMetrics.spendingByWallet).forEach(([key, value]) => {
+              scaledSpendingByWallet[key] = value * hbdScaleFactor;
+            });
+
+            // Build final metrics response
+            const metrics = {
+              // Use HiveSQL totals as source of truth
+              totalHbd,
+              totalHive,
+              combinedTotalHbd,
+              remainingQ4Funds: sheetsMetrics.remainingQ4Funds, // Keep as-is
+              
+              // Scaled breakdowns (based on Google Sheets metadata, scaled to HiveSQL totals)
+              spendingByCategory: scaledSpendingByCategory,
+              spendingByCountry: scaledSpendingByCountry,
+              spendingByEventType: scaledSpendingByEventType,
+              spendingByEventProject: scaledSpendingByEventProject,
+              spendingByWallet: scaledSpendingByWallet,
+              monthlySpending: sheetsMetrics.monthlySpending, // Keep monthly trends from Google Sheets
+              
+              // Loans and refunds (tracked separately)
+              totalLoansHbd,
+              totalLoansHive,
+              totalLoansHbdEquivalent,
+              totalLoanRefundsHbd,
+              totalLoanRefundsHive,
+              totalLoanRefundsHbdEquivalent,
+              totalRefundsHbd,
+              totalRefundsHive,
+              totalRefundsHbdEquivalent,
+              
+              // Metadata
+              sourceOfTruth: 'HiveSQL',
+              dataYear: year,
+            };
+
+            console.log(`Metrics (${year}): Using HiveSQL totals - HBD: ${totalHbd.toFixed(2)}, HIVE: ${totalHive.toFixed(2)}, Combined: ${combinedTotalHbd.toFixed(2)}`);
+
             resolve(NextResponse.json(metrics));
           } catch (error) {
             console.error('Error processing transactions for metrics:', error);

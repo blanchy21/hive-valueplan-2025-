@@ -131,7 +131,7 @@ export default function TransactionTable({ transactions, filters }: TransactionT
   };
 
   const exportToCSV = () => {
-    const headers = ['Wallet', 'Date', 'HBD', 'Hive', 'Event/Project', 'Country', 'Theme', 'Event Type', 'Category', 'Total Spend'];
+    const headers = ['Wallet', 'Date', 'HBD', 'Hive', 'Event/Project', 'Country', 'Theme', 'Event Type', 'Category', 'Memo/Comment', 'Total Spend'];
     const rows = filteredTransactions.map(tx => [
       tx.wallet,
       tx.date,
@@ -142,6 +142,7 @@ export default function TransactionTable({ transactions, filters }: TransactionT
       tx.theme,
       tx.eventType,
       tx.category,
+      tx.memo || '',
       tx.totalSpend || 0,
     ]);
 
@@ -209,6 +210,9 @@ export default function TransactionTable({ transactions, filters }: TransactionT
               <th className="hidden px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 lg:table-cell lg:px-6">
                 Event Type
               </th>
+              <th className="hidden px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 xl:table-cell xl:px-6">
+                Memo/Comment
+              </th>
               <th
                 className="cursor-pointer px-3 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500 hover:bg-gray-100 sm:px-6"
                 onClick={() => handleSort('totalSpend')}
@@ -234,6 +238,15 @@ export default function TransactionTable({ transactions, filters }: TransactionT
                 <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-700 sm:px-6">{tx.country}</td>
                 <td className="hidden whitespace-nowrap px-3 py-4 text-sm text-gray-700 md:table-cell md:px-6">{tx.category}</td>
                 <td className="hidden whitespace-nowrap px-3 py-4 text-sm text-gray-700 lg:table-cell lg:px-6">{tx.eventType}</td>
+                <td className="hidden max-w-xs px-3 py-4 text-sm text-gray-700 xl:table-cell xl:px-6">
+                  {tx.memo ? (
+                    <span className="truncate block" title={tx.memo}>
+                      {tx.memo}
+                    </span>
+                  ) : (
+                    <span className="text-gray-400 italic">—</span>
+                  )}
+                </td>
                 <td className="whitespace-nowrap px-3 py-4 text-right text-sm font-semibold text-gray-900 sm:px-6">
                   {formatCurrency(tx.totalSpend || 0)}
                 </td>
@@ -256,6 +269,7 @@ export default function TransactionTable({ transactions, filters }: TransactionT
                 <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-700 sm:px-6"></td>
                 <td className="hidden whitespace-nowrap px-3 py-4 text-sm text-gray-700 md:table-cell md:px-6"></td>
                 <td className="hidden whitespace-nowrap px-3 py-4 text-sm text-gray-700 lg:table-cell lg:px-6"></td>
+                <td className="hidden px-3 py-4 text-sm text-gray-700 xl:table-cell xl:px-6"></td>
                 <td className="whitespace-nowrap px-3 py-4 text-right text-sm font-bold text-gray-900 sm:px-6">
                   {formatCurrency(totals.totalSpend)}
                 </td>

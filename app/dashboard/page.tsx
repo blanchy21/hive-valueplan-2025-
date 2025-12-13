@@ -88,6 +88,9 @@ export default function DashboardPage() {
         </ChartCard>
 
         <ChartCard title="Spending by Event Project">
+          <div className="mb-3 rounded-md bg-blue-50 p-2 text-xs text-blue-700">
+            <strong>Note:</strong> These totals show funding for each project across all wallets. A wallet may appear in multiple projects, and project names must match exactly.
+          </div>
           <SpendingChart data={eventProjectData} title="Event Project Spending" />
         </ChartCard>
 
@@ -107,6 +110,14 @@ export default function DashboardPage() {
           data={walletData} 
           title="Top Funded Wallets"
         />
+        <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
+          <div className="font-semibold mb-2">📊 Understanding Wallet vs Project Totals</div>
+          <div className="space-y-1 text-xs">
+            <p><strong>Wallet Totals:</strong> Show the total amount received by each wallet across <em>all projects</em> they&apos;re involved in.</p>
+            <p><strong>Project Totals:</strong> Show the total amount spent on each project across <em>all wallets</em> that received funding for that project.</p>
+            <p className="mt-2 text-amber-700"><strong>Why they differ:</strong> A wallet can receive funding for multiple projects (e.g., SWC, SWC/B2B), and a project can have funding sent to multiple wallets. Project names must match exactly (case-sensitive).</p>
+          </div>
+        </div>
       </div>
 
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">

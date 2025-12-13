@@ -1,0 +1,436 @@
+{
+    "year": 2025,
+    "comparison": {
+        "googleSheets": {
+            "totalHBD": 906483.3799999998,
+            "totalHIVE": 789881.2640000001,
+            "transactionCount": 339
+        },
+        "hiveSQL": {
+            "totalHBD": 936953.0169999998,
+            "totalHIVE": 882208.2450000002,
+            "transactionCount": 367
+        },
+        "discrepancies": {
+            "hbdDifference": -30469.636999999988,
+            "hbdDifferencePercent": "-3.36%",
+            "hiveDifference": -92326.98100000015,
+            "hiveDifferencePercent": "-11.69%",
+            "countDifference": -28
+        }
+    },
+    "missingInHiveSQL": {
+        "count": 4,
+        "transactions": [
+            {
+                "wallet": "mazergaming",
+                "date": "01/08/2025",
+                "hbd": 5000,
+                "hive": 0,
+                "eventProject": "",
+                "country": "",
+                "theme": "",
+                "eventType": "",
+                "category": ""
+            },
+            {
+                "wallet": "finfarm",
+                "date": "1/08/2025",
+                "hbd": 3000,
+                "hive": 0,
+                "eventProject": "",
+                "country": "",
+                "theme": "",
+                "eventType": "",
+                "category": ""
+            },
+            {
+                "wallet": "bigfluffyclouds",
+                "date": "11/10/2025",
+                "hbd": 180,
+                "hive": 0,
+                "eventProject": "",
+                "country": "",
+                "theme": "",
+                "eventType": "",
+                "category": ""
+            },
+            {
+                "wallet": "king13wallet",
+                "date": "18/10/2025",
+                "hbd": 5500,
+                "hive": 0,
+                "eventProject": "",
+                "country": "",
+                "theme": "",
+                "eventType": "",
+                "category": ""
+            }
+        ],
+        "totalHBD": 13680,
+        "totalHIVE": 0
+    },
+    "missingInSheets": {
+        "count": 35,
+        "transactions": [
+            {
+                "trx_id": "3850329072",
+                "timestamp": "2025-01-22T04:00:18.000Z",
+                "from": "alpha",
+                "to": "valueplan",
+                "amount": "2000.000 HBD",
+                "currency": "HBD",
+                "amountValue": 2000,
+                "memo": "loan"
+            },
+            {
+                "trx_id": "3852383322",
+                "timestamp": "2025-01-24T19:02:42.000Z",
+                "from": "blocktrades",
+                "to": "valueplan",
+                "amount": "13000.000 HBD",
+                "currency": "HBD",
+                "amountValue": 13000,
+                "memo": "loan"
+            },
+            {
+                "trx_id": "3857795001",
+                "timestamp": "2025-01-31T19:45:12.000Z",
+                "from": "blackheart1",
+                "to": "valueplan",
+                "amount": "250.000 HBD",
+                "currency": "HBD",
+                "amountValue": 250,
+                "memo": "To be given later"
+            },
+            {
+                "trx_id": "3871908177",
+                "timestamp": "2025-02-19T03:10:24.000Z",
+                "from": "valueplan",
+                "to": "victorwallet",
+                "amount": "200.000 HBD",
+                "currency": "HBD",
+                "amountValue": 200,
+                "memo": "Hive bike racing | Costa Rica | minor sponsorship admin fees"
+            },
+            {
+                "trx_id": "3882019016",
+                "timestamp": "2025-03-04T12:34:57.000Z",
+                "from": "arlettemsalase",
+                "to": "valueplan",
+                "amount": "330.750 HBD",
+                "currency": "HBD",
+                "amountValue": 330.75,
+                "memo": "Expenses of @xvlad that he used because he did not attend due to illness | Modular Carnival | Belo Horizonte, Brazil"
+            },
+            {
+                "trx_id": "3882019723",
+                "timestamp": "2025-03-04T12:36:24.000Z",
+                "from": "arlettemsalase",
+                "to": "valueplan",
+                "amount": "100.000 HBD",
+                "currency": "HBD",
+                "amountValue": 100,
+                "memo": "Extra money planned for @xvlad who was unable to attend due to illness | Modular Carnival | Belo Horizonte, Brazil"
+            },
+            {
+                "trx_id": "3882021017",
+                "timestamp": "2025-03-04T12:38:24.000Z",
+                "from": "arlettemsalase",
+                "to": "valueplan",
+                "amount": "180.000 HBD",
+                "currency": "HBD",
+                "amountValue": 180,
+                "memo": "Return of funds from @ jthomasewsky at the end of his trip on 2/3/2025 | Modular Carnival | Belo Horizonte, Brazil"
+            },
+            {
+                "trx_id": "3887819001",
+                "timestamp": "2025-03-12T12:29:18.000Z",
+                "from": "buzzparty",
+                "to": "valueplan",
+                "amount": "120.000 HBD",
+                "currency": "HBD",
+                "amountValue": 120,
+                "memo": "excess is going back to you - thank you for the support!"
+            },
+            {
+                "trx_id": "3902686108",
+                "timestamp": "2025-04-02T03:33:00.000Z",
+                "from": "arlettemsalase",
+                "to": "valueplan",
+                "amount": "40.000 HBD",
+                "currency": "HBD",
+                "amountValue": 40,
+                "memo": "Refund of unused prizes at Cumbres de Comunidades 2025"
+            },
+            {
+                "trx_id": "3915808385",
+                "timestamp": "2025-04-21T04:05:36.000Z",
+                "from": "valueplan",
+                "to": "konchix",
+                "amount": "180.000 HBD",
+                "currency": "HBD",
+                "amountValue": 180,
+                "memo": "Talent Land | Mexico | logistics | 6 days"
+            },
+            {
+                "trx_id": "3915808914",
+                "timestamp": "2025-04-21T04:06:36.000Z",
+                "from": "valueplan",
+                "to": "gr33nm4ster",
+                "amount": "180.000 HBD",
+                "currency": "HBD",
+                "amountValue": 180,
+                "memo": "Talent Land | Mexico | logistics | 6 days"
+            },
+            {
+                "trx_id": "3916547490",
+                "timestamp": "2025-04-22T05:28:21.000Z",
+                "from": "valueplan",
+                "to": "lb2b",
+                "amount": "210.000 HBD",
+                "currency": "HBD",
+                "amountValue": 210,
+                "memo": "Hive B2B | Venezuela | logistics for 7 days of work"
+            },
+            {
+                "trx_id": "3922653140",
+                "timestamp": "2025-05-01T00:11:36.000Z",
+                "from": "talentlandfund",
+                "to": "valueplan",
+                "amount": "3479.070 HBD",
+                "currency": "HBD",
+                "amountValue": 3479.07,
+                "memo": "Unspent Talent Land Budget Due to Savings During Event Execution"
+            },
+            {
+                "trx_id": "3929074458",
+                "timestamp": "2025-05-10T01:08:00.000Z",
+                "from": "talentlandfund",
+                "to": "valueplan",
+                "amount": "137.000 HBD",
+                "currency": "HBD",
+                "amountValue": 137,
+                "memo": "Funds Returned from event savings"
+            },
+            {
+                "trx_id": "3934050142",
+                "timestamp": "2025-05-16T22:26:03.000Z",
+                "from": "buzzparty",
+                "to": "valueplan",
+                "amount": "2701.570 HBD",
+                "currency": "HBD",
+                "amountValue": 2701.57,
+                "memo": "Remaining funds of the Hive Creator Days in Graz - Thank you for your support & trust!"
+            },
+            {
+                "trx_id": "3961342643",
+                "timestamp": "2025-06-24T14:46:36.000Z",
+                "from": "hivecuba",
+                "to": "valueplan",
+                "amount": "5.000 HBD",
+                "currency": "HBD",
+                "amountValue": 5,
+                "memo": "unused funds for fee after using Hive P2P"
+            },
+            {
+                "trx_id": "3962057664",
+                "timestamp": "2025-06-25T16:32:57.000Z",
+                "from": "bigfluffyclouds",
+                "to": "valueplan",
+                "amount": "4.294 HBD",
+                "currency": "HBD",
+                "amountValue": 4.294,
+                "memo": ""
+            },
+            {
+                "trx_id": "3970356814",
+                "timestamp": "2025-07-08T02:37:39.000Z",
+                "from": "alpha",
+                "to": "valueplan",
+                "amount": "91325.000 HIVE",
+                "currency": "HIVE",
+                "amountValue": 91325,
+                "memo": "bridge"
+            },
+            {
+                "trx_id": "3987282803",
+                "timestamp": "2025-08-01T23:46:48.000Z",
+                "from": "valueplan",
+                "to": "mazergaming",
+                "amount": "5000.000 HBD",
+                "currency": "HBD",
+                "amountValue": 5000,
+                "memo": "Mazer | USA | gaming promotion | game-related activities/integrations/partnerships | August"
+            },
+            {
+                "trx_id": "3987283288",
+                "timestamp": "2025-08-01T23:48:30.000Z",
+                "from": "valueplan",
+                "to": "finfarm",
+                "amount": "3000.000 HBD",
+                "currency": "HBD",
+                "amountValue": 3000,
+                "memo": "FinFarm | India | multi-month partnership | July partial costs | outstanding 3000 HBD "
+            },
+            {
+                "trx_id": "3987715316",
+                "timestamp": "2025-08-02T16:04:36.000Z",
+                "from": "latamwallet",
+                "to": "valueplan",
+                "amount": "661.500 HBD",
+                "currency": "HBD",
+                "amountValue": 661.5,
+                "memo": "Refund of part of the budget because it was sent first @jthomasewsky | Tx: 865642b2fe60bdfe4ad35edc51bfd9ba06441378"
+            },
+            {
+                "trx_id": "3996019180",
+                "timestamp": "2025-08-14T18:36:06.000Z",
+                "from": "latamwallet",
+                "to": "valueplan",
+                "amount": "210.000 HBD",
+                "currency": "HBD",
+                "amountValue": 210,
+                "memo": "Return of funds by @jthomasewsky"
+            },
+            {
+                "trx_id": "4003209023",
+                "timestamp": "2025-08-25T14:59:48.000Z",
+                "from": "danielvehe",
+                "to": "valueplan",
+                "amount": "140.700 HBD",
+                "currency": "HBD",
+                "amountValue": 140.7,
+                "memo": "Refund of \"Hive Goes to School\" - Distriator Workshop was only partially completed"
+            },
+            {
+                "trx_id": "4004768265",
+                "timestamp": "2025-08-27T21:49:12.000Z",
+                "from": "latamwallet",
+                "to": "valueplan",
+                "amount": "147.500 HBD",
+                "currency": "HBD",
+                "amountValue": 147.5,
+                "memo": "Refund of event funds CES La Paz, CES Santa Cruz, PBS Asunci\u00f3n and CLF Medell\u00edn "
+            },
+            {
+                "trx_id": "4008808828",
+                "timestamp": "2025-09-02T22:38:42.000Z",
+                "from": "hivecuba",
+                "to": "valueplan",
+                "amount": "560.000 HBD",
+                "currency": "HBD",
+                "amountValue": 560,
+                "memo": "HiveCubaCon physical event canceled - 1060 HBD can't be returned do to having been invested "
+            },
+            {
+                "trx_id": "4011376518",
+                "timestamp": "2025-09-06T16:20:18.000Z",
+                "from": "ecoinstant",
+                "to": "valueplan",
+                "amount": "551.250 HBD",
+                "currency": "HBD",
+                "amountValue": 551.25,
+                "memo": "refund ecoinstante"
+            },
+            {
+                "trx_id": "4015013263",
+                "timestamp": "2025-09-12T00:16:21.000Z",
+                "from": "guiltyparties",
+                "to": "valueplan",
+                "amount": "1000.000 HIVE",
+                "currency": "HIVE",
+                "amountValue": 1000,
+                "memo": "minor bridge loan"
+            },
+            {
+                "trx_id": "4020959524",
+                "timestamp": "2025-09-20T20:38:00.000Z",
+                "from": "guiltyparties",
+                "to": "valueplan",
+                "amount": "551.000 HBD",
+                "currency": "HBD",
+                "amountValue": 551,
+                "memo": "CLF | Colombia | refund due to compromised user account | loss refund "
+            },
+            {
+                "trx_id": "4034900405",
+                "timestamp": "2025-10-11T23:03:06.000Z",
+                "from": "valueplan",
+                "to": "bigfluffyclouds",
+                "amount": "180.000 HBD",
+                "currency": "HBD",
+                "amountValue": 180,
+                "memo": "Rally car | Europe | CER | large order of Hive stickers for giving out during the event "
+            },
+            {
+                "trx_id": "4039374887",
+                "timestamp": "2025-10-19T01:47:03.000Z",
+                "from": "valueplan",
+                "to": "finfarm",
+                "amount": "5500.000 HBD",
+                "currency": "HBD",
+                "amountValue": 5500,
+                "memo": "FinFarm | India | multi-month partnership | October costs | note: this is a service provider/vendor"
+            },
+            {
+                "trx_id": "4042428048",
+                "timestamp": "2025-10-23T17:49:45.000Z",
+                "from": "hdev",
+                "to": "valueplan",
+                "amount": "0.003 HBD",
+                "currency": "HBD",
+                "amountValue": 0.003,
+                "memo": "Hey @valueplan, Our HDev Team (Hive Dev Team) has been working for over a year now on core Hive development, building, creating, and expanding API endpoints as part of the Hive API nodes (HAF nodes). Our work is open source, part of the hive gitlab core code, and is shipped across all nodes enabling devs, app builders, and users alike to make the best out of Hive. Not to limit our contribution to backend apps, we've also been working on front end apps part of core dev, such as block explorer and health checker, while also helping wherever needed. Our team of 6 developers is excited to continue our work in the upcoming year and has submitted a DHF proposal to make that happen. As always, your support is essential for us to move forward. More details are in the following DHF link. We would appreciate your vote in support. Thank you! https://peakd.com/proposals/360 "
+            },
+            {
+                "trx_id": "4044583862",
+                "timestamp": "2025-10-27T02:56:00.000Z",
+                "from": "coldone",
+                "to": "valueplan",
+                "amount": "2600.000 HBD",
+                "currency": "HBD",
+                "amountValue": 2600,
+                "memo": "Vibes | global | refund"
+            },
+            {
+                "trx_id": "4054521668",
+                "timestamp": "2025-11-11T06:33:24.000Z",
+                "from": "nwothini335",
+                "to": "valueplan",
+                "amount": "2.000 HIVE",
+                "currency": "HIVE",
+                "amountValue": 2,
+                "memo": "!tip @valueplan/important-announcement-vibes @nwothini335 app:peakd message:Tip sent through peakd.com"
+            },
+            {
+                "trx_id": "4058980284",
+                "timestamp": "2025-11-17T22:34:42.000Z",
+                "from": "hiverun",
+                "to": "valueplan",
+                "amount": "500.000 HBD",
+                "currency": "HBD",
+                "amountValue": 500,
+                "memo": "Refund for the Caracas Rock Photography Contest was not made."
+            },
+            {
+                "trx_id": "4072838055",
+                "timestamp": "2025-12-11T02:46:27.000Z",
+                "from": "valueplan",
+                "to": "krolestwo",
+                "amount": "2000.000 HBD",
+                "currency": "HBD",
+                "amountValue": 2000,
+                "memo": "Krolestwo | Poland | base operating expenses for project | rental, materials, adertising and marketing costs | Q4 December"
+            }
+        ],
+        "totalHBD": 44719.637,
+        "totalHIVE": 92327
+    },
+    "summary": {
+        "sheetsHasMore": false,
+        "hbdMatches": false,
+        "hiveMatches": false,
+        "countsMatch": false
+    }
+}

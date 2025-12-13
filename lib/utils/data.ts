@@ -679,6 +679,9 @@ function mapToVerticalCategory(
   const eventProject = (transaction.eventProject || '').trim();
   if (eventProject) {
     const eventProjectLower = eventProject.toLowerCase();
+    // Normalize by removing spaces and special characters for better matching
+    const eventProjectNormalized = eventProjectLower.replace(/\s+/g, '').replace(/[^a-z0-9]/g, '');
+    
     // Try exact match first
     const exactProjectMatch = verticalProjects.find(vp => 
       vp.project.toLowerCase() === eventProjectLower
@@ -686,7 +689,26 @@ function mapToVerticalCategory(
     if (exactProjectMatch) {
       return exactProjectMatch.category;
     }
-    // Try partial match (project name might be part of eventProject)
+    
+    // Try normalized match (handles "Hive Fest" vs "HiveFest")
+    const normalizedMatch = verticalProjects.find(vp => {
+      const projectNormalized = vp.project.toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9]/g, '');
+      return eventProjectNormalized === projectNormalized;
+    });
+    if (normalizedMatch) {
+      return normalizedMatch.category;
+    }
+    
+    // Try partial match with normalized strings (handles "Hive Wrestle Fest" vs "Wrestlefest")
+    const normalizedPartialMatch = verticalProjects.find(vp => {
+      const projectNormalized = vp.project.toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9]/g, '');
+      return eventProjectNormalized.includes(projectNormalized) || projectNormalized.includes(eventProjectNormalized);
+    });
+    if (normalizedPartialMatch) {
+      return normalizedPartialMatch.category;
+    }
+    
+    // Try partial match with original strings (fallback)
     const partialProjectMatch = verticalProjects.find(vp => {
       const projectLower = vp.project.toLowerCase();
       return eventProjectLower.includes(projectLower) || projectLower.includes(eventProjectLower);

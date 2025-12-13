@@ -1,0 +1,349 @@
+{
+    "year": 2025,
+    "summary": {
+        "loansInData": {
+            "count": 2,
+            "totalHBD": 15000
+        },
+        "loanRefundsInData": {
+            "count": 2,
+            "totalHBD": 0
+        },
+        "eventRefundsInData": {
+            "count": 21,
+            "totalHBD": 14469.634
+        },
+        "incomingTransfersInHiveSQL": {
+            "count": 28,
+            "totalHBD": 30469.637000000002
+        },
+        "matchedLoans": {
+            "count": 2,
+            "totalHBD": 15000
+        },
+        "unmatchedIncomingWithLoanMemo": {
+            "count": 2,
+            "totalHBD": 2000,
+            "transactions": [
+                {
+                    "trx_id": "4015013263",
+                    "timestamp": "2025-09-12T00:16:21.000Z",
+                    "from": "guiltyparties",
+                    "to": "valueplan",
+                    "amount": "1000.000 HIVE",
+                    "currency": "HIVE",
+                    "amountValue": 1000,
+                    "memo": "minor bridge loan"
+                },
+                {
+                    "trx_id": "4072782628",
+                    "timestamp": "2025-12-11T00:36:12.000Z",
+                    "from": "alpha",
+                    "to": "valueplan",
+                    "amount": "2000.000 HBD",
+                    "currency": "HBD",
+                    "amountValue": 2000,
+                    "memo": "loan"
+                }
+            ]
+        },
+        "matchedRefunds": {
+            "count": 1,
+            "totalHBD": 200
+        },
+        "unmatchedRefunds": {
+            "count": 24,
+            "totalHBD": 82052.71,
+            "transactions": [
+                {
+                    "trx_id": "3874854918",
+                    "timestamp": "2025-02-22T23:58:51.000Z",
+                    "from": "valueplan",
+                    "to": "swc-oficial",
+                    "amount": "9355.000 HBD",
+                    "currency": "HBD",
+                    "amountValue": 9355,
+                    "memo": "SWC | Venezuela | 1st Versus by Category 2025 | Falcon state activity including B2B component | Hive merch, transportation, event day logistics, insurance (refund possible)"
+                },
+                {
+                    "trx_id": "3876236357",
+                    "timestamp": "2025-02-24T19:31:21.000Z",
+                    "from": "valueplan",
+                    "to": "qmwallet",
+                    "amount": "4661.950 HBD",
+                    "currency": "HBD",
+                    "amountValue": 4661.95,
+                    "memo": "CWP LATAM | Venezuela | completion costs for project | transport for materials and installers, various parts including joints of different sizes | Hive merch order including caps, shirts and standing banners and brochures | 300 HBD contingency included to be returned if unused | 5% conversion "
+                },
+                {
+                    "trx_id": "3887398654",
+                    "timestamp": "2025-03-11T21:28:09.000Z",
+                    "from": "valueplan",
+                    "to": "buzzparty",
+                    "amount": "1000.000 HBD",
+                    "currency": "HBD",
+                    "amountValue": 1000,
+                    "memo": "BuzzParty | Austria | contingency/conversion amount | refund possible for unused portion once total known"
+                },
+                {
+                    "trx_id": "3909607443",
+                    "timestamp": "2025-04-12T02:00:27.000Z",
+                    "from": "valueplan",
+                    "to": "king13wallet",
+                    "amount": "5800.000 HBD",
+                    "currency": "HBD",
+                    "amountValue": 5800,
+                    "memo": "K13 Racing | Venezuela | 1Era Valida Campeonato Nacional 2025 | 30 March | refund for costs | parts, transport, logistics "
+                },
+                {
+                    "trx_id": "3924825225",
+                    "timestamp": "2025-05-04T01:54:15.000Z",
+                    "from": "valueplan",
+                    "to": "mashallah-corp",
+                    "amount": "213.000 HBD",
+                    "currency": "HBD",
+                    "amountValue": 213,
+                    "memo": "SWC | Venezuela | refund for event food catering order for 15 persons over 2 days"
+                },
+                {
+                    "trx_id": "3924832604",
+                    "timestamp": "2025-05-04T02:12:27.000Z",
+                    "from": "valueplan",
+                    "to": "krolestwo",
+                    "amount": "6000.000 HBD",
+                    "currency": "HBD",
+                    "amountValue": 6000,
+                    "memo": "Krolestwo | Poland | base operating expenses for project | rental, materials, adertising and marketing costs | Q2 - 3 months | April (refund), May, June"
+                },
+                {
+                    "trx_id": "3946696616",
+                    "timestamp": "2025-06-03T18:07:54.000Z",
+                    "from": "valueplan",
+                    "to": "hivestudentshub",
+                    "amount": "4044.000 HBD",
+                    "currency": "HBD",
+                    "amountValue": 4044,
+                    "memo": "Hive Impact Story | Ghana | tech event/student workshop | 600 participants | a one-day event | Hive merch and minor event considerations and logistics | 10% contingency included that is to be refunded if portions unused | promotional activity"
+                },
+                {
+                    "trx_id": "3947645762",
+                    "timestamp": "2025-06-05T02:18:42.000Z",
+                    "from": "valueplan",
+                    "to": "alpha",
+                    "amount": "15000.000 HBD",
+                    "currency": "HBD",
+                    "amountValue": 15000,
+                    "memo": "Refund | Global | Refund for two bridge loans of 15000 HBD total | Refund for tx: c36855f4b46c055e0c6071d115b2e1d456f10162 and 72959dc1eeb2e129f311767c558c1bc3be6a1b44"
+                },
+                {
+                    "trx_id": "3974933373",
+                    "timestamp": "2025-07-14T19:19:54.000Z",
+                    "from": "valueplan",
+                    "to": "upb2b",
+                    "amount": "13216.855 HIVE",
+                    "currency": "HIVE",
+                    "amountValue": 13216.855,
+                    "memo": "Hive B2B | Venezuela | Hive merch order, brochures order, logistics included | meetings and workshops included | 3156 HBD or 13216.855 HIVE | 5% conversion included | 300 HBD contingency included that is to be refunded if unused (not included in conversion)"
+                },
+                {
+                    "trx_id": "3979725564",
+                    "timestamp": "2025-07-21T19:08:30.000Z",
+                    "from": "valueplan",
+                    "to": "latamwallet",
+                    "amount": "4049.050 HBD",
+                    "currency": "HBD",
+                    "amountValue": 4049.05,
+                    "memo": "CES | Bolivia | transport, accommodations, merch, miscellaneous expenses, insurance, giveaways | 600 HBD contingency included to be returned if unneeded | sponsorship already paid"
+                },
+                {
+                    "trx_id": "3990774560",
+                    "timestamp": "2025-08-07T05:20:54.000Z",
+                    "from": "valueplan",
+                    "to": "hivestudentshub",
+                    "amount": "4235.000 HBD",
+                    "currency": "HBD",
+                    "amountValue": 4235,
+                    "memo": "Web3 Summit Tamale | Ghana | tech event for up to 300 attendees | Hive merch included in order, 300 shirts to be given out as part of onboarding | contingency of 385 included | event may come in under budget and see refunds"
+                },
+                {
+                    "trx_id": "3994226389",
+                    "timestamp": "2025-08-12T04:14:39.000Z",
+                    "from": "valueplan",
+                    "to": "king13wallet",
+                    "amount": "4800.000 HBD",
+                    "currency": "HBD",
+                    "amountValue": 4800,
+                    "memo": "K13 Racing | LATAM | costs from several events | refund amount in part from Q2 | transport, logistics, consumables, tires, and event-specific costs | events tied to B2B "
+                },
+                {
+                    "trx_id": "3996729713",
+                    "timestamp": "2025-08-15T19:14:21.000Z",
+                    "from": "valueplan",
+                    "to": "developwallet",
+                    "amount": "440.000 HBD",
+                    "currency": "HBD",
+                    "amountValue": 440,
+                    "memo": "SWC/B2B | Venezuela | refund from Aviadores event | 22 hours of design work to create all of the materials that had to be created from scratch | partial hours towards this were donated "
+                },
+                {
+                    "trx_id": "4008629507",
+                    "timestamp": "2025-09-02T16:57:48.000Z",
+                    "from": "valueplan",
+                    "to": "hivefest.sponsor",
+                    "amount": "12505.600 HBD",
+                    "currency": "HBD",
+                    "amountValue": 12505.6,
+                    "memo": "Hive Fest | Malaysia | refund | downpayments for venues and transportation costs | 10737.56 Euro in HBD"
+                },
+                {
+                    "trx_id": "4010055332",
+                    "timestamp": "2025-09-04T17:45:18.000Z",
+                    "from": "valueplan",
+                    "to": "josepimpo",
+                    "amount": "680.000 HBD",
+                    "currency": "HBD",
+                    "amountValue": 680,
+                    "memo": "CLF/Promotions/B2B | Global | general promotion of specific Hive-focused events | refund for CLF flight"
+                },
+                {
+                    "trx_id": "4035963378",
+                    "timestamp": "2025-10-13T16:33:54.000Z",
+                    "from": "valueplan",
+                    "to": "alpha",
+                    "amount": "91325.000 HIVE",
+                    "currency": "HIVE",
+                    "amountValue": 91325,
+                    "memo": "Refund | Global | tx  d3d399c3c19218baf9757cf34889ebf1c5ebfd54 | bridge loan on July 8 | issued in HIVE and returned in HIVE"
+                },
+                {
+                    "trx_id": "4035965637",
+                    "timestamp": "2025-10-13T16:39:09.000Z",
+                    "from": "valueplan",
+                    "to": "guiltyparties",
+                    "amount": "1000.000 HIVE",
+                    "currency": "HIVE",
+                    "amountValue": 1000,
+                    "memo": "Refund | Global | tx f70767757d9539c44192efd1fd1888bfb9e47ada | minor bridge loan on Sept 12 | issued in HIVE and returned in HIVE"
+                },
+                {
+                    "trx_id": "4037511205",
+                    "timestamp": "2025-10-16T02:46:15.000Z",
+                    "from": "valueplan",
+                    "to": "developwallet",
+                    "amount": "340.000 HBD",
+                    "currency": "HBD",
+                    "amountValue": 340,
+                    "memo": "SWC/B2B | Venezuela | Free Style Day | 17 hours of graphics work for all elements of the event | this is a refund"
+                },
+                {
+                    "trx_id": "4039321241",
+                    "timestamp": "2025-10-18T23:45:39.000Z",
+                    "from": "valueplan",
+                    "to": "king13wallet",
+                    "amount": "5500.000 HBD",
+                    "currency": "HBD",
+                    "amountValue": 5500,
+                    "memo": "K13 Racing | LATAM | 3 x events | 2/3/4 valida in honor of Yoni Ceccoto and Carlos Lavado | B2B-focused representation | refund | total invoice is  9987 HBD with tax | partial payment"
+                },
+                {
+                    "trx_id": "4048786147",
+                    "timestamp": "2025-11-02T15:02:21.000Z",
+                    "from": "valueplan",
+                    "to": "lordbutterfly",
+                    "amount": "260.000 HBD",
+                    "currency": "HBD",
+                    "amountValue": 260,
+                    "memo": "Conf3rence | Germany | transportation costs | refund"
+                }
+            ]
+        }
+    },
+    "matchingLoans": [
+        {
+            "hiveSQL": {
+                "trx_id": "3850329072",
+                "timestamp": "2025-01-22T04:00:18.000Z",
+                "from": "alpha",
+                "to": "valueplan",
+                "amount": "2000.000 HBD",
+                "currency": "HBD",
+                "amountValue": 2000,
+                "memo": "loan"
+            },
+            "loan": {
+                "wallet": "alpha",
+                "date": "22/01/2025",
+                "hbd": 2000,
+                "hive": 0,
+                "eventProject": "",
+                "country": "",
+                "theme": "",
+                "eventType": "",
+                "category": "Loan",
+                "isLoan": true,
+                "isRefund": false,
+                "isLoanRefund": false,
+                "totalSpend": 2000
+            },
+            "matchReason": "Amount and date match"
+        },
+        {
+            "hiveSQL": {
+                "trx_id": "3852383322",
+                "timestamp": "2025-01-24T19:02:42.000Z",
+                "from": "blocktrades",
+                "to": "valueplan",
+                "amount": "13000.000 HBD",
+                "currency": "HBD",
+                "amountValue": 13000,
+                "memo": "loan"
+            },
+            "loan": {
+                "wallet": "blocktrades",
+                "date": "24/01/2025",
+                "hbd": 13000,
+                "hive": 0,
+                "eventProject": "",
+                "country": "",
+                "theme": "",
+                "eventType": "",
+                "category": "Loan",
+                "isLoan": true,
+                "isRefund": false,
+                "isLoanRefund": false,
+                "totalSpend": 13000
+            },
+            "matchReason": "Amount and date match"
+        }
+    ],
+    "matchingRefunds": [
+        {
+            "hiveSQL": {
+                "trx_id": "3871908177",
+                "timestamp": "2025-02-19T03:10:24.000Z",
+                "from": "valueplan",
+                "to": "victorwallet",
+                "amount": "200.000 HBD",
+                "currency": "HBD",
+                "amountValue": 200,
+                "memo": "Hive bike racing | Costa Rica | minor sponsorship admin fees"
+            },
+            "refund": {
+                "wallet": "hivecreators",
+                "date": "19/02/2025",
+                "hbd": 200,
+                "hive": 0,
+                "eventProject": "",
+                "country": "",
+                "theme": "",
+                "eventType": "",
+                "category": "Event Refund",
+                "isRefund": true,
+                "isLoan": false,
+                "isLoanRefund": false,
+                "totalSpend": 200
+            },
+            "matchReason": "Amount and date match"
+        }
+    ]
+}

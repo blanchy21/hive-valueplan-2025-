@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import {
   getAccountTransfers,
+  getAccountTransfersViaSQL,
   filterTransfersByDate,
   findTransactionById,
   findMatchingTransactions,
@@ -26,8 +27,43 @@ export async function GET(request: Request): Promise<NextResponse> {
     const verifyDate = searchParams.get('verifyDate');
     const toleranceDays = parseInt(searchParams.get('toleranceDays') || '1', 10);
 
-    // Fetch transfers from Hive blockchain
-    let transfers = await getAccountTransfers(account, limit);
+    // Determine if we should use SQL (preferred for date ranges) or pagination API
+    const useSQL = !!(startDate || endDate || (verifyDate && verifyAmount && verifyCurrency));
+    let transfers: Awaited<ReturnType<typeof getAccountTransfers>> = [];
+
+    // Try SQL first if date range is provided (much more efficient)
+    if (useSQL) {
+      try {
+        let start = startDate ? new Date(startDate) : verifyDate ? new Date(verifyDate) : undefined;
+        let end = endDate ? new Date(endDate) : undefined;
+        
+        // For verification queries, expand date range to search window
+        if (verifyDate && !startDate && !endDate) {
+          const verifyDateObj = new Date(verifyDate);
+          start = new Date(verifyDateObj);
+          start.setDate(start.getDate() - toleranceDays);
+          end = new Date(verifyDateObj);
+          end.setDate(end.getDate() + toleranceDays);
+        }
+        
+        transfers = await getAccountTransfersViaSQL(account, start, end);
+        console.log(`✅ Fetched ${transfers.length} transfers via HiveSQL`);
+      } catch (error) {
+        console.warn('HiveSQL query failed, falling back to pagination API:', error);
+        // Fall back to pagination method
+        transfers = await getAccountTransfers(account, limit);
+        
+        // Apply date filtering if provided
+        if (startDate || endDate) {
+          const start = startDate ? new Date(startDate) : undefined;
+          const end = endDate ? new Date(endDate) : undefined;
+          transfers = filterTransfersByDate(transfers, start, end);
+        }
+      }
+    } else {
+      // No date range specified, use pagination API
+      transfers = await getAccountTransfers(account, limit);
+    }
 
     // If searching for specific transaction ID
     if (trxId) {
@@ -75,8 +111,9 @@ export async function GET(request: Request): Promise<NextResponse> {
       });
     }
 
-    // Filter by date range if provided
-    if (startDate || endDate) {
+    // Additional date filtering (if SQL wasn't used or for post-processing)
+    // Note: If SQL was used, date filtering is already applied, but we can refine if needed
+    if (!useSQL && (startDate || endDate)) {
       const start = startDate ? new Date(startDate) : undefined;
       const end = endDate ? new Date(endDate) : undefined;
       
@@ -137,6 +174,7 @@ export async function GET(request: Request): Promise<NextResponse> {
         limit,
         startDate: startDate || null,
         endDate: endDate || null,
+        method: useSQL ? 'sql' : 'pagination',
       },
     });
   } catch (error) {

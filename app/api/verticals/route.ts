@@ -5,6 +5,7 @@ import { aggregateByVerticalCategory, parseNumber, parseDate, detectTransactionT
 import { Transaction } from '@/lib/types';
 import Papa from 'papaparse';
 import { getSheetsCsvUrl, SHEET_TABS } from '@/lib/utils/sheets';
+import { getAccountTransfersViaSQL } from '@/lib/utils/hive';
 
 const SHEETS_CSV_URL = getSheetsCsvUrl(SHEET_TABS.TRANSACTIONS);
 
@@ -171,8 +172,39 @@ async function fetchTransactions(): Promise<Transaction[]> {
 export async function GET(): Promise<NextResponse> {
   try {
     const verticalsData = getVerticalsData();
+    const year = 2025;
+    const DEFAULT_ACCOUNT = 'valueplan';
     
-    // Fetch transactions to calculate Hive and HBD values
+    // 1. Fetch accurate totals from HiveSQL (source of truth)
+    const startDate = new Date(`${year}-01-01T00:00:00.000Z`);
+    const endDate = new Date(`${year}-12-31T23:59:59.999Z`);
+    
+    let hiveSQLOutgoingHBD = 0;
+    let hiveSQLOutgoingHIVE = 0;
+    
+    try {
+      console.log(`[Verticals] Fetching HiveSQL transfers for ${year}...`);
+      const hiveSQLTransfers = await getAccountTransfersViaSQL(DEFAULT_ACCOUNT, startDate, endDate);
+      
+      // Filter to outgoing transfers only (from valueplan)
+      const outgoingTransfers = hiveSQLTransfers.filter(t => 
+        t.from.toLowerCase() === DEFAULT_ACCOUNT.toLowerCase()
+      );
+      
+      hiveSQLOutgoingHBD = outgoingTransfers
+        .filter(t => t.currency === 'HBD')
+        .reduce((sum, t) => sum + t.amountValue, 0);
+      
+      hiveSQLOutgoingHIVE = outgoingTransfers
+        .filter(t => t.currency === 'HIVE')
+        .reduce((sum, t) => sum + t.amountValue, 0);
+      
+      console.log(`[Verticals] ✅ HiveSQL totals: HBD: ${hiveSQLOutgoingHBD.toFixed(2)}, HIVE: ${hiveSQLOutgoingHIVE.toFixed(2)}`);
+    } catch (error) {
+      console.warn('[Verticals] Could not fetch HiveSQL data, falling back to Google Sheets only:', error);
+    }
+    
+    // 2. Fetch transactions from Google Sheets for project matching (metadata)
     const transactions = await fetchTransactions();
     
     // Prepare vertical projects for matching
@@ -182,11 +214,10 @@ export async function GET(): Promise<NextResponse> {
     }));
     
     // Aggregate transactions by vertical category for the current year (2025)
-    const year = 2025;
+    // This gives us the proportions/breakdown from Google Sheets
     const verticalTotals = aggregateByVerticalCategory(transactions, year, verticalProjects);
     
-    // Calculate total spending for 2025 to validate against metrics
-    // This uses the same filtering logic as metrics (excluding loans/refunds)
+    // Calculate totals from Google Sheets (for scaling)
     const spendingTransactions2025 = filterSpendingTransactions(transactions).filter(tx => {
       try {
         const txDate = parseDate(tx.date);
@@ -196,9 +227,9 @@ export async function GET(): Promise<NextResponse> {
       }
     });
     
-    const totalHbd2025 = spendingTransactions2025.reduce((sum: number, tx: Transaction) => sum + (tx.hbd || 0), 0);
-    const totalHive2025 = spendingTransactions2025.reduce((sum: number, tx: Transaction) => sum + (tx.hive || 0), 0);
-    const totalHiveInHbd2025 = spendingTransactions2025.reduce((sum: number, tx: Transaction) => {
+    const sheetsTotalHbd2025 = spendingTransactions2025.reduce((sum: number, tx: Transaction) => sum + (tx.hbd || 0), 0);
+    const sheetsTotalHive2025 = spendingTransactions2025.reduce((sum: number, tx: Transaction) => sum + (tx.hive || 0), 0);
+    const sheetsTotalHiveInHbd2025 = spendingTransactions2025.reduce((sum: number, tx: Transaction) => {
       if (tx.hiveToHbd !== undefined) {
         return sum + tx.hiveToHbd;
       } else if (tx.hive) {
@@ -206,22 +237,55 @@ export async function GET(): Promise<NextResponse> {
       }
       return sum;
     }, 0);
-    const combinedTotalHbd2025 = totalHbd2025 + totalHiveInHbd2025;
+    const sheetsCombinedTotalHbd2025 = sheetsTotalHbd2025 + sheetsTotalHiveInHbd2025;
     
-    // Sum vertical totals
-    const verticalsTotal = Object.values(verticalTotals).reduce((sum, totals) => sum + totals.combinedTotalHbd, 0);
+    // Use HiveSQL totals as source of truth (if available), otherwise use Google Sheets
+    const totalHbd2025 = hiveSQLOutgoingHBD > 0 ? hiveSQLOutgoingHBD : sheetsTotalHbd2025;
+    const totalHive2025 = hiveSQLOutgoingHIVE > 0 ? hiveSQLOutgoingHIVE : sheetsTotalHive2025;
+    
+    // Calculate combined total (HIVE converted to HBD)
+    const conversionRate = 0.24; // 2025 average rate
+    const hiveInHbd = totalHive2025 * conversionRate;
+    const combinedTotalHbd2025 = totalHbd2025 + hiveInHbd;
+    
+    // Calculate scale factor to match HiveSQL totals
+    const scaleFactor = sheetsCombinedTotalHbd2025 > 0 && combinedTotalHbd2025 > 0
+      ? combinedTotalHbd2025 / sheetsCombinedTotalHbd2025
+      : 1;
+    
+    // Scale vertical totals to match HiveSQL totals
+    const scaledVerticalTotals: Record<string, {
+      totalHbd: number;
+      totalHive: number;
+      totalHiveInHbd: number;
+      combinedTotalHbd: number;
+    }> = {};
+    
+    Object.entries(verticalTotals).forEach(([categoryName, totals]) => {
+      scaledVerticalTotals[categoryName] = {
+        totalHbd: totals.totalHbd * scaleFactor,
+        totalHive: totals.totalHive * scaleFactor,
+        totalHiveInHbd: totals.totalHiveInHbd * scaleFactor,
+        combinedTotalHbd: totals.combinedTotalHbd * scaleFactor
+      };
+    });
+    
+    // Sum scaled vertical totals
+    const scaledVerticalsTotal = Object.values(scaledVerticalTotals).reduce((sum, totals) => sum + totals.combinedTotalHbd, 0);
     
     // Log validation
     console.log(`\n=== VERTICALS TOTALS VALIDATION (${year}) ===`);
-    console.log(`Total spending (all transactions, 2025): ${combinedTotalHbd2025.toFixed(2)} HBD`);
-    console.log(`Verticals total (matched transactions): ${verticalsTotal.toFixed(2)} HBD`);
-    console.log(`Difference (unmatched transactions): ${(combinedTotalHbd2025 - verticalsTotal).toFixed(2)} HBD`);
-    console.log(`Coverage: ${((verticalsTotal / combinedTotalHbd2025) * 100).toFixed(2)}%`);
+    console.log(`HiveSQL Total (source of truth): ${combinedTotalHbd2025.toFixed(2)} HBD`);
+    console.log(`Google Sheets Total: ${sheetsCombinedTotalHbd2025.toFixed(2)} HBD`);
+    console.log(`Scale Factor: ${scaleFactor.toFixed(4)}`);
+    console.log(`Scaled Verticals Total: ${scaledVerticalsTotal.toFixed(2)} HBD`);
+    console.log(`Unmatched: ${(combinedTotalHbd2025 - scaledVerticalsTotal).toFixed(2)} HBD`);
+    console.log(`Coverage: ${((scaledVerticalsTotal / combinedTotalHbd2025) * 100).toFixed(2)}%`);
     console.log(`==========================================\n`);
     
-    // Add Hive and HBD values to each category
+    // Add scaled Hive and HBD values to each category
     verticalsData.categories = verticalsData.categories.map(category => {
-      const totals = verticalTotals[category.name] || {
+      const totals = scaledVerticalTotals[category.name] || {
         totalHbd: 0,
         totalHive: 0,
         totalHiveInHbd: 0,
@@ -245,14 +309,18 @@ export async function GET(): Promise<NextResponse> {
       combinedTotalHbd2025: number;
       verticalsTotal: number;
       unmatchedAmount: number;
+      sourceOfTruth: string;
+      scaleFactor: number;
     }};
     responseData.totalsSummary = {
       totalHbd2025,
       totalHive2025,
-      totalHiveInHbd2025,
+      totalHiveInHbd2025: hiveInHbd,
       combinedTotalHbd2025,
-      verticalsTotal,
-      unmatchedAmount: combinedTotalHbd2025 - verticalsTotal
+      verticalsTotal: scaledVerticalsTotal,
+      unmatchedAmount: combinedTotalHbd2025 - scaledVerticalsTotal,
+      sourceOfTruth: hiveSQLOutgoingHBD > 0 ? 'HiveSQL' : 'Google Sheets',
+      scaleFactor
     };
     
     return NextResponse.json(verticalsData);

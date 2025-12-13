@@ -13,7 +13,7 @@ export default function ExecutiveSummary() {
   useEffect(() => {
     // Use setTimeout to avoid synchronous setState in effect
     const timer = setTimeout(() => setMounted(true), 0);
-    fetch('/api/metrics')
+    fetch('/api/metrics?year=2025')
       .then(res => res.json())
       .then(data => {
         setMetrics(data);
@@ -45,7 +45,14 @@ export default function ExecutiveSummary() {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="mb-6 text-2xl font-bold text-gray-900">2025 Year Overview</h2>
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-gray-900">2025 Year Overview</h2>
+          {metrics && metrics.sourceOfTruth && (
+            <div className="text-xs text-gray-500">
+              Source: <span className="font-semibold text-green-600">{metrics.sourceOfTruth}</span>
+            </div>
+          )}
+        </div>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           <MetricCard
             title="Total HBD"

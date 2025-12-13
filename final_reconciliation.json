@@ -1,0 +1,195 @@
+{
+    "year": 2025,
+    "sourceOfTruth": "HiveSQL (Blockchain Data)",
+    "reconciliation": {
+        "outgoing": {
+            "hiveSQL": {
+                "totalHBD": 906483.3799999999,
+                "totalHIVE": 789881.2450000001,
+                "count": 339
+            },
+            "googleSheets": {
+                "totalHBD": 906483.3799999998,
+                "totalHIVE": 789881.2640000001,
+                "count": 339
+            },
+            "difference": {
+                "hbd": 1.1641532182693481e-10,
+                "hive": -0.018999999971129,
+                "hbdPercent": "0.00%",
+                "hivePercent": "-0.00%"
+            },
+            "unaccounted": {
+                "count": 3,
+                "totalHBD": 8180,
+                "totalHIVE": 0,
+                "transactions": [
+                    {
+                        "trx_id": "3987282803",
+                        "timestamp": "2025-08-01T23:46:48.000Z",
+                        "from": "valueplan",
+                        "to": "mazergaming",
+                        "amount": "5000.000 HBD",
+                        "currency": "HBD",
+                        "amountValue": 5000,
+                        "memo": "Mazer | USA | gaming promotion | game-related activities/integrations/partnerships | August"
+                    },
+                    {
+                        "trx_id": "3987283288",
+                        "timestamp": "2025-08-01T23:48:30.000Z",
+                        "from": "valueplan",
+                        "to": "finfarm",
+                        "amount": "3000.000 HBD",
+                        "currency": "HBD",
+                        "amountValue": 3000,
+                        "memo": "FinFarm | India | multi-month partnership | July partial costs | outstanding 3000 HBD "
+                    },
+                    {
+                        "trx_id": "4034900405",
+                        "timestamp": "2025-10-11T23:03:06.000Z",
+                        "from": "valueplan",
+                        "to": "bigfluffyclouds",
+                        "amount": "180.000 HBD",
+                        "currency": "HBD",
+                        "amountValue": 180,
+                        "memo": "Rally car | Europe | CER | large order of Hive stickers for giving out during the event "
+                    }
+                ]
+            }
+        },
+        "incoming": {
+            "hiveSQL": {
+                "totalHBD": 30469.637000000002,
+                "totalHIVE": 92327,
+                "count": 28
+            },
+            "combinedSources": {
+                "loans": {
+                    "hbd": 15000,
+                    "hive": 0,
+                    "count": 2
+                },
+                "loanRefunds": {
+                    "hbd": 0,
+                    "hive": 92325,
+                    "count": 2
+                },
+                "eventRefunds": {
+                    "hbd": 14469.634,
+                    "hive": 0,
+                    "count": 21
+                },
+                "totalHBD": 29469.634,
+                "totalHIVE": 92325
+            },
+            "difference": {
+                "hbd": 1000.0030000000042,
+                "hive": 2,
+                "hbdPercent": "3.28%",
+                "hivePercent": "0.00%"
+            },
+            "unaccounted": {
+                "count": 5,
+                "totalHBD": 2750.0029999999997,
+                "totalHIVE": 2,
+                "transactions": [
+                    {
+                        "trx_id": "3857795001",
+                        "timestamp": "2025-01-31T19:45:12.000Z",
+                        "from": "blackheart1",
+                        "to": "valueplan",
+                        "amount": "250.000 HBD",
+                        "currency": "HBD",
+                        "amountValue": 250,
+                        "memo": "To be given later"
+                    },
+                    {
+                        "trx_id": "4042428048",
+                        "timestamp": "2025-10-23T17:49:45.000Z",
+                        "from": "hdev",
+                        "to": "valueplan",
+                        "amount": "0.003 HBD",
+                        "currency": "HBD",
+                        "amountValue": 0.003,
+                        "memo": "Hey @valueplan, Our HDev Team (Hive Dev Team) has been working for over a year now on core Hive development, building, creating, and expanding API endpoints as part of the Hive API nodes (HAF nodes). Our work is open source, part of the hive gitlab core code, and is shipped across all nodes enabling devs, app builders, and users alike to make the best out of Hive. Not to limit our contribution to backend apps, we've also been working on front end apps part of core dev, such as block explorer and health checker, while also helping wherever needed. Our team of 6 developers is excited to continue our work in the upcoming year and has submitted a DHF proposal to make that happen. As always, your support is essential for us to move forward. More details are in the following DHF link. We would appreciate your vote in support. Thank you! https://peakd.com/proposals/360 "
+                    },
+                    {
+                        "trx_id": "4054521668",
+                        "timestamp": "2025-11-11T06:33:24.000Z",
+                        "from": "nwothini335",
+                        "to": "valueplan",
+                        "amount": "2.000 HIVE",
+                        "currency": "HIVE",
+                        "amountValue": 2,
+                        "memo": "!tip @valueplan/important-announcement-vibes @nwothini335 app:peakd message:Tip sent through peakd.com"
+                    },
+                    {
+                        "trx_id": "4058980284",
+                        "timestamp": "2025-11-17T22:34:42.000Z",
+                        "from": "hiverun",
+                        "to": "valueplan",
+                        "amount": "500.000 HBD",
+                        "currency": "HBD",
+                        "amountValue": 500,
+                        "memo": "Refund for the Caracas Rock Photography Contest was not made."
+                    },
+                    {
+                        "trx_id": "4072782628",
+                        "timestamp": "2025-12-11T00:36:12.000Z",
+                        "from": "alpha",
+                        "to": "valueplan",
+                        "amount": "2000.000 HBD",
+                        "currency": "HBD",
+                        "amountValue": 2000,
+                        "memo": "loan"
+                    }
+                ]
+            }
+        }
+    },
+    "accurateTotals": {
+        "totalOutgoingHBD": 906483.3799999999,
+        "totalOutgoingHIVE": 789881.2450000001,
+        "totalIncomingHBD": 30469.637000000002,
+        "totalIncomingHIVE": 92327,
+        "netHBD": -876013.7429999999,
+        "netHIVE": -697554.2450000001,
+        "totalTransactions": 367
+    },
+    "breakdown": {
+        "outgoingByCategory": {
+            "regularSpending": {
+                "hbd": 906483.3799999998,
+                "hive": 789881.2640000001,
+                "count": 339
+            },
+            "unaccounted": {
+                "hbd": 8180,
+                "hive": 0,
+                "count": 3
+            }
+        },
+        "incomingByCategory": {
+            "loans": {
+                "hbd": 15000,
+                "hive": 0,
+                "count": 2
+            },
+            "loanRefunds": {
+                "hbd": 0,
+                "hive": 92325,
+                "count": 2
+            },
+            "eventRefunds": {
+                "hbd": 14469.634,
+                "hive": 0,
+                "count": 21
+            },
+            "unaccounted": {
+                "hbd": 2750.0029999999997,
+                "hive": 2,
+                "count": 5
+            }
+        }
+    }
+}

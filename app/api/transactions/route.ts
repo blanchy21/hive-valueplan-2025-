@@ -1,10 +1,67 @@
 import { NextResponse } from 'next/server';
 import Papa from 'papaparse';
-import { Transaction } from '@/lib/types';
+import { Transaction, HiveTransfer } from '@/lib/types';
 import { parseNumber, parseDate, calculateTotalSpend, detectTransactionType } from '@/lib/utils/data';
 import { getSheetsCsvUrl, SHEET_TABS } from '@/lib/utils/sheets';
+import { getAccountTransfersViaSQL } from '@/lib/utils/hive';
 
 const SHEETS_CSV_URL = getSheetsCsvUrl(SHEET_TABS.TRANSACTIONS);
+const DEFAULT_ACCOUNT = 'valueplan';
+const AMOUNT_TOLERANCE = 0.001; // For matching amounts (handles floating point precision)
+const DATE_TOLERANCE_DAYS = 7; // Days tolerance for matching dates
+
+/**
+ * Matches a transaction from Google Sheets with a HiveSQL transfer
+ * Matches by: date (within tolerance), amount, currency, and wallet (to account)
+ */
+function matchTransactionToTransfer(
+  transaction: Transaction,
+  transfers: HiveTransfer[],
+  sourceAccount: string = DEFAULT_ACCOUNT
+): HiveTransfer | null {
+  const txDate = parseDate(transaction.date);
+  const targetWallet = transaction.wallet.replace('@', '').toLowerCase().trim();
+  
+  // Find transfers from valueplan to the target wallet
+  const relevantTransfers = transfers.filter(transfer => 
+    transfer.from.toLowerCase() === sourceAccount.toLowerCase() &&
+    transfer.to.toLowerCase() === targetWallet
+  );
+  
+  if (relevantTransfers.length === 0) {
+    return null;
+  }
+  
+  // Try to match by amount and date
+  for (const transfer of relevantTransfers) {
+    const transferDate = new Date(transfer.timestamp);
+    const dateDiff = Math.abs(transferDate.getTime() - txDate.getTime());
+    const maxDateDiff = DATE_TOLERANCE_DAYS * 24 * 60 * 60 * 1000;
+    
+    // Check if date is within tolerance
+    if (dateDiff > maxDateDiff) {
+      continue;
+    }
+    
+    // Match HBD amount
+    if (transaction.hbd > 0 && transfer.currency === 'HBD') {
+      const amountDiff = Math.abs(transfer.amountValue - transaction.hbd);
+      if (amountDiff <= AMOUNT_TOLERANCE) {
+        return transfer;
+      }
+    }
+    
+    // Match HIVE amount
+    if (transaction.hive > 0 && transfer.currency === 'HIVE') {
+      const amountDiff = Math.abs(transfer.amountValue - transaction.hive);
+      if (amountDiff <= AMOUNT_TOLERANCE) {
+        return transfer;
+      }
+    }
+  }
+  
+  return null;
+}
 
 export async function GET(): Promise<NextResponse> {
   try {
@@ -18,11 +75,11 @@ export async function GET(): Promise<NextResponse> {
 
     const csvText = await response.text();
     
-    return new Promise<NextResponse>((resolve, reject) => {
+    return new Promise<NextResponse>(async (resolve, reject) => {
       Papa.parse(csvText, {
         header: false, // Parse without headers first to find the actual header row
         skipEmptyLines: true,
-        complete: (results) => {
+        complete: async (results) => {
           try {
             const rows: string[][] = results.data as string[][];
             
@@ -87,6 +144,10 @@ export async function GET(): Promise<NextResponse> {
               } else if ((headerLower.includes('hive') && headerLower.includes('to') && headerLower.includes('hbd')) ||
                          headerLower === 'hive to hbd' || headerLower.includes('hive to hbd')) {
                 if (!headerMap['hiveToHbd']) headerMap['hiveToHbd'] = index;
+              } else if (headerLower === 'memo' || headerLower.includes('memo') || 
+                         headerLower === 'comment' || headerLower.includes('comment') ||
+                         headerLower === 'notes' || headerLower.includes('notes')) {
+                if (!headerMap['memo']) headerMap['memo'] = index;
               }
             });
 
@@ -206,6 +267,7 @@ export async function GET(): Promise<NextResponse> {
                 theme: String(row[headerMap['theme']] || '').trim(),
                 eventType: String(row[headerMap['eventType']] || '').trim(),
                 category: String(row[headerMap['category']] || '').trim(),
+                memo: headerMap['memo'] !== undefined ? String(row[headerMap['memo']] || '').trim() : undefined,
                 hiveToHbd, // Use actual Hive To HBD value from spreadsheet
               };
 
@@ -222,6 +284,62 @@ export async function GET(): Promise<NextResponse> {
             console.log(`Parsed ${transactions.length} transactions from CSV`);
             console.log('Skipped rows breakdown:', skippedRows);
             console.log(`Total rows processed: ${rows.length - headerRowIndex - 1}`);
+            
+            // Fetch memos from HiveSQL for transactions
+            // Determine date range from transactions
+            let minDate: Date | undefined;
+            let maxDate: Date | undefined;
+            
+            transactions.forEach(tx => {
+              try {
+                const txDate = parseDate(tx.date);
+                if (!minDate || txDate < minDate) minDate = txDate;
+                if (!maxDate || txDate > maxDate) maxDate = txDate;
+              } catch {
+                // Skip invalid dates
+              }
+            });
+            
+            // Add buffer for date tolerance
+            if (minDate) {
+              minDate = new Date(minDate);
+              minDate.setDate(minDate.getDate() - DATE_TOLERANCE_DAYS);
+            }
+            if (maxDate) {
+              maxDate = new Date(maxDate);
+              maxDate.setDate(maxDate.getDate() + DATE_TOLERANCE_DAYS);
+              maxDate.setHours(23, 59, 59, 999);
+            }
+            
+            // Fetch HiveSQL transfers if we have valid dates
+            let hivesqlTransfers: HiveTransfer[] = [];
+            if (minDate && maxDate) {
+              try {
+                console.log(`Fetching HiveSQL transfers from ${DEFAULT_ACCOUNT} for date range ${minDate.toISOString()} to ${maxDate.toISOString()}`);
+                hivesqlTransfers = await getAccountTransfersViaSQL(DEFAULT_ACCOUNT, minDate, maxDate);
+                console.log(`✅ Fetched ${hivesqlTransfers.length} transfers from HiveSQL`);
+              } catch (error) {
+                console.error('Failed to fetch HiveSQL transfers for memos:', error);
+                // Continue without memos if HiveSQL fails
+              }
+            }
+            
+            // Match transactions with HiveSQL transfers to populate memos
+            let matchedCount = 0;
+            transactions.forEach(transaction => {
+              // Skip if memo already exists from Google Sheets
+              if (transaction.memo) {
+                return;
+              }
+              
+              const matchedTransfer = matchTransactionToTransfer(transaction, hivesqlTransfers, DEFAULT_ACCOUNT);
+              if (matchedTransfer && matchedTransfer.memo) {
+                transaction.memo = matchedTransfer.memo;
+                matchedCount++;
+              }
+            });
+            
+            console.log(`✅ Matched ${matchedCount} transactions with HiveSQL memos`);
             resolve(NextResponse.json(transactions));
           } catch (error) {
             console.error('Error processing transactions:', error);

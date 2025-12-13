@@ -8,11 +8,18 @@ export interface Transaction {
   theme: string;
   eventType: string;
   category: string;
+  memo?: string; // Transaction memo/comment from blockchain
   hiveToHbd?: number;
   totalSpend?: number;
   isLoan?: boolean;
   isRefund?: boolean;
   isLoanRefund?: boolean;
+  // Verification fields
+  verified?: boolean;
+  verificationStatus?: 'verified' | 'unverified' | 'discrepancy' | 'not_found';
+  hiveTransactionId?: string; // Link to blockchain transaction
+  verificationDate?: string; // When verification was performed
+  verificationNotes?: string; // Any notes about discrepancies
 }
 
 export interface Metrics {
@@ -36,6 +43,9 @@ export interface Metrics {
   totalLoanRefundsHbd: number;
   totalLoanRefundsHive: number;
   totalLoanRefundsHbdEquivalent: number;
+  // Metadata
+  sourceOfTruth?: string; // Data source (e.g., 'HiveSQL')
+  dataYear?: number; // Year of the data
 }
 
 export interface GitLabContent {
@@ -84,5 +94,39 @@ export interface HiveAccountTransactions {
   account: string;
   transfers: HiveTransfer[];
   totalCount: number;
+}
+
+// Verification result types
+export interface VerificationResult {
+  verified: boolean;
+  status: 'verified' | 'unverified' | 'discrepancy' | 'not_found';
+  hiveTransaction?: HiveTransfer;
+  discrepancies?: {
+    amount?: { expected: number; actual: number };
+    date?: { expected: Date; actual: Date };
+    currency?: { expected: 'HIVE' | 'HBD'; actual: 'HIVE' | 'HBD' };
+  };
+  verificationDate: string;
+}
+
+export interface BatchVerificationResult {
+  transaction: Transaction;
+  verification: VerificationResult;
+}
+
+export interface BatchVerificationSummary {
+  year: number;
+  totalTransactions: number;
+  verified: number;
+  unverified: number;
+  discrepancies: number;
+  notFound: number;
+  results: BatchVerificationResult[];
+  summary: {
+    totalHbdVerified: number;
+    totalHiveVerified: number;
+    totalHbdDiscrepancies: number;
+    totalHiveDiscrepancies: number;
+  };
 }
 
