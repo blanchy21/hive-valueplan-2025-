@@ -3,6 +3,10 @@
 import { useEffect, useState } from 'react';
 import { VerticalsData } from '@/lib/types/verticals';
 import VerticalsChart from '@/components/verticals/VerticalsChart';
+import CategorySpendingPieChart from '@/components/verticals/CategorySpendingPieChart';
+import CategorySpendingBarChart from '@/components/verticals/CategorySpendingBarChart';
+import CategoryAnalysisCard from '@/components/verticals/CategoryAnalysisCard';
+import ChartCard from '@/components/dashboard/ChartCard';
 import { formatCurrency } from '@/lib/utils/format';
 
 type VerticalsResponse = VerticalsData | (VerticalsData & {
@@ -143,6 +147,29 @@ export default function VerticalsPage() {
 
       {/* Charts */}
       <VerticalsChart data={data} />
+
+      {/* Financial Analysis Charts */}
+      <div className="mb-8">
+        <h2 className="mb-4 text-2xl font-bold text-gray-900">Financial Analysis by Category</h2>
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <ChartCard title="Category Spending Distribution" className="h-96">
+            <CategorySpendingPieChart categories={data.categories} />
+          </ChartCard>
+          <ChartCard title="HBD vs HIVE Breakdown by Category" className="h-96">
+            <CategorySpendingBarChart categories={data.categories} />
+          </ChartCard>
+        </div>
+      </div>
+
+      {/* Category Analysis */}
+      <div className="mb-8">
+        <h2 className="mb-4 text-2xl font-bold text-gray-900">Detailed Category Analysis</h2>
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {data.categories.map((category, index) => (
+            <CategoryAnalysisCard key={`${category.name}-${index}`} category={category} />
+          ))}
+        </div>
+      </div>
 
       {/* Filters */}
       <div className="mb-6 rounded-lg border border-gray-200 bg-white p-4 shadow-sm">

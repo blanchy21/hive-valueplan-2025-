@@ -15,6 +15,7 @@ export default function ProjectsPage() {
   const [mounted, setMounted] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [showOnlyWithKPIs, setShowOnlyWithKPIs] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
 
   useEffect(() => {
     const timer = setTimeout(() => setMounted(true), 0);
@@ -61,6 +62,15 @@ export default function ProjectsPage() {
     );
   }
 
+  // Get unique categories from projects with verticals data
+  const categories = Array.from(
+    new Set(
+      data.projects
+        .filter(p => p.verticals?.category)
+        .map(p => p.verticals!.category!)
+    )
+  ).sort();
+
   // Filter projects
   let filteredProjects = data.projects;
   if (searchQuery) {
@@ -71,6 +81,11 @@ export default function ProjectsPage() {
   if (showOnlyWithKPIs) {
     filteredProjects = filteredProjects.filter(p => 
       p.kpis && Object.keys(p.kpis).length > 0
+    );
+  }
+  if (selectedCategory) {
+    filteredProjects = filteredProjects.filter(p =>
+      p.verticals?.category === selectedCategory
     );
   }
 
@@ -84,7 +99,7 @@ export default function ProjectsPage() {
       </div>
 
       {/* Summary Cards */}
-      <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-3">
+      <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-4">
         <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
           <h3 className="text-sm font-medium text-gray-600">Total Projects</h3>
           <p className="mt-2 text-3xl font-bold text-gray-900">{data.totalProjects}</p>
@@ -94,16 +109,20 @@ export default function ProjectsPage() {
           <p className="mt-2 text-3xl font-bold text-green-600">{data.projectsWithKPIs}</p>
         </div>
         <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-          <h3 className="text-sm font-medium text-gray-600">Projects without KPIs</h3>
-          <p className="mt-2 text-3xl font-bold text-orange-600">
-            {data.totalProjects - data.projectsWithKPIs}
+          <h3 className="text-sm font-medium text-gray-600">Projects with Verticals</h3>
+          <p className="mt-2 text-3xl font-bold text-blue-600">
+            {data.projects.filter(p => p.verticals && (p.verticals.category || p.verticals.status)).length}
           </p>
+        </div>
+        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+          <h3 className="text-sm font-medium text-gray-600">Categories</h3>
+          <p className="mt-2 text-3xl font-bold text-purple-600">{categories.length}</p>
         </div>
       </div>
 
       {/* Filters */}
       <div className="mb-6 rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <div>
             <label className="mb-2 block text-sm font-medium text-gray-700">
               Search Projects
@@ -115,6 +134,23 @@ export default function ProjectsPage() {
               placeholder="Search by project name..."
               className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
+          </div>
+          <div>
+            <label className="mb-2 block text-sm font-medium text-gray-700">
+              Filter by Category
+            </label>
+            <select
+              value={selectedCategory}
+              onChange={e => setSelectedCategory(e.target.value)}
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            >
+              <option value="">All Categories</option>
+              {categories.map(category => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="flex items-end">
             <label className="flex items-center space-x-2 cursor-pointer">
@@ -130,11 +166,12 @@ export default function ProjectsPage() {
             </label>
           </div>
         </div>
-        {(searchQuery || showOnlyWithKPIs) && (
+        {(searchQuery || showOnlyWithKPIs || selectedCategory) && (
           <button
             onClick={() => {
               setSearchQuery('');
               setShowOnlyWithKPIs(false);
+              setSelectedCategory('');
             }}
             className="mt-4 text-sm text-blue-600 hover:text-blue-800"
           >
@@ -161,6 +198,27 @@ export default function ProjectsPage() {
 
 function ProjectCard({ project }: { project: Project }) {
   const hasKPIs = project.kpis && Object.keys(project.kpis).length > 0;
+  const hasVerticals = project.verticals && (
+    project.verticals.category || 
+    project.verticals.status || 
+    project.verticals.type
+  );
+
+  // Get status color
+  const getStatusColor = (status?: string) => {
+    switch (status) {
+      case 'Ongoing':
+        return 'bg-green-100 text-green-800';
+      case 'Transitioning':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'Concluded':
+        return 'bg-gray-100 text-gray-800';
+      case 'Initiating':
+        return 'bg-blue-100 text-blue-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
 
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
@@ -168,12 +226,50 @@ function ProjectCard({ project }: { project: Project }) {
         <h3 className="text-lg font-semibold text-gray-900 flex-1">
           {project.name}
         </h3>
-        {hasKPIs && (
-          <span className="ml-2 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800">
-            Has KPIs
-          </span>
-        )}
+        <div className="ml-2 flex flex-col gap-1 items-end">
+          {hasKPIs && (
+            <span className="rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800">
+              Has KPIs
+            </span>
+          )}
+          {project.verticals?.status && (
+            <span className={`rounded-full px-2 py-1 text-xs font-medium ${getStatusColor(project.verticals.status)}`}>
+              {project.verticals.status}
+            </span>
+          )}
+        </div>
       </div>
+
+      {/* Verticals Data */}
+      {hasVerticals && project.verticals && (
+        <div className="mb-4 rounded-md bg-blue-50 p-3">
+          <div className="text-xs font-semibold text-blue-700 uppercase tracking-wide mb-2">
+            Project Category
+          </div>
+          <div className="space-y-1">
+            {project.verticals.category && (
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-blue-600">Category:</span>
+                <span className="font-semibold text-blue-900">{project.verticals.category}</span>
+              </div>
+            )}
+            {project.verticals.type && (
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-blue-600">Type:</span>
+                <span className="font-semibold text-blue-900">{project.verticals.type}</span>
+              </div>
+            )}
+            {project.verticals.combinedTotalHbd !== undefined && project.verticals.combinedTotalHbd > 0 && (
+              <div className="pt-2 mt-2 border-t border-blue-200 flex items-center justify-between">
+                <span className="text-sm font-semibold text-blue-700">Category Spending:</span>
+                <span className="text-base font-bold text-blue-900">
+                  {formatCurrency(project.verticals.combinedTotalHbd, 2)} HBD
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {project.url && (
         <a

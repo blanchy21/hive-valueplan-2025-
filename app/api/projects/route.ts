@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import Papa from 'papaparse';
 import { Project, ProjectKPI, ProjectsData } from '@/lib/types/projects';
+import { VerticalsData } from '@/lib/types/verticals';
+import { getVerticalsData } from '@/lib/data/verticals';
 
 const PROJECT_REPORTS_URL = 'https://valueplanreports.com/projectreports.html';
 const PROJECT_SHEETS_ID = '1LWXPu-rVk7kH1tU-F1Io-0HIQaVZEBrbiBTH1O8Fxwk';
@@ -266,44 +268,89 @@ async function fetchKPIsFromSheet(): Promise<Map<string, ProjectKPI>> {
   }
 }
 
-// Match projects with KPIs
-function matchProjectsWithKPIs(projects: Project[], kpiMap: Map<string, ProjectKPI>): Project[] {
-  return projects.map(project => {
-    // Try exact match first
-    let kpi = kpiMap.get(project.name.toLowerCase());
-    
-    // Try partial match if exact match fails
-    if (!kpi) {
-      for (const [key, value] of kpiMap.entries()) {
-        if (project.name.toLowerCase().includes(key) || key.includes(project.name.toLowerCase())) {
-          kpi = value;
-          break;
-        }
-      }
-    }
+// Get verticals data (static structure with category mappings)
+function getVerticalsDataSync(): VerticalsData {
+  return getVerticalsData();
+}
+
+// Normalize project name for matching (remove spaces, special chars, lowercase)
+function normalizeProjectName(name: string): string {
+  return name.toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9]/g, '');
+}
+
+// Convert verticals projects to Project format
+function convertVerticalsToProjects(verticalsData: VerticalsData): Project[] {
+  return verticalsData.projects.map(vertical => {
+    // Find the category for this project to get financial data
+    const category = verticalsData.categories.find(cat =>
+      cat.projects.some(p => p.project === vertical.project)
+    );
 
     return {
-      ...project,
-      kpis: kpi,
+      name: vertical.project,
+      verticals: {
+        category: vertical.category,
+        type: vertical.type,
+        status: vertical.status,
+        totalHbd: category?.totalHbd,
+        totalHive: category?.totalHive,
+        totalHiveInHbd: category?.totalHiveInHbd,
+        combinedTotalHbd: category?.combinedTotalHbd,
+      },
     };
   });
 }
 
 export async function GET(): Promise<NextResponse> {
   try {
-    // Fetch projects and KPIs in parallel
-    const [projects, kpiMap] = await Promise.all([
-      fetchProjectsFromWebsite(),
+    // Get verticals data (synchronous call to get static structure)
+    const verticalsData = getVerticalsDataSync();
+
+    // Use verticals projects as the primary source
+    let projects = convertVerticalsToProjects(verticalsData);
+
+    // Also try to fetch projects from website and KPIs to enhance the data
+    const [websiteProjects, kpiMap] = await Promise.all([
+      fetchProjectsFromWebsite().catch(() => []), // Don't fail if website is unavailable
       fetchKPIsFromSheet(),
     ]);
 
-    // Match projects with their KPIs
-    const projectsWithKPIs = matchProjectsWithKPIs(projects, kpiMap);
+    // Match verticals projects with website projects (to get URLs)
+    const websiteProjectsMap = new Map(
+      websiteProjects.map(p => [normalizeProjectName(p.name), p])
+    );
+
+    // Match verticals projects with KPIs
+    projects = projects.map(project => {
+      const normalizedName = normalizeProjectName(project.name);
+      
+      // Try to get URL from website projects
+      const websiteProject = websiteProjectsMap.get(normalizedName);
+      if (websiteProject?.url) {
+        project.url = websiteProject.url;
+      }
+
+      // Try to match KPIs
+      let kpi = kpiMap.get(normalizedName);
+      if (!kpi) {
+        for (const [key, value] of kpiMap.entries()) {
+          if (normalizedName.includes(key) || key.includes(normalizedName)) {
+            kpi = value;
+            break;
+          }
+        }
+      }
+
+      return {
+        ...project,
+        kpis: kpi,
+      };
+    });
 
     const responseData: ProjectsData = {
-      projects: projectsWithKPIs,
-      totalProjects: projectsWithKPIs.length,
-      projectsWithKPIs: projectsWithKPIs.filter(p => p.kpis && Object.keys(p.kpis).length > 0).length,
+      projects,
+      totalProjects: projects.length,
+      projectsWithKPIs: projects.filter(p => p.kpis && Object.keys(p.kpis).length > 0).length,
     };
 
     return NextResponse.json(responseData);

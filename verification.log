@@ -6585,3 +6585,68 @@ VERIFICATION STARTED at 2025-12-10T00:24:13.595Z
 [2025-12-13T23:56:31.274Z] ✅ Connected to HiveSQL successfully
 [2025-12-13T23:56:31.487Z] 📋 TxTransfers columns: ID, tx_id, type, from, to, amount, amount_symbol, memo, request_id, timestamp
 [2025-12-13T23:56:31.643Z] ✅ HiveSQL query returned 367 results
+[2025-12-14T00:02:54.226Z] 🔍 Connecting to HiveSQL for account: valueplan, date range: 2025-01-01T00:00:00.000Z to 2025-12-31T23:59:59.999Z
+[2025-12-14T00:02:54.239Z] 🔌 Attempting connection to vip.hivesql.io as Hive-blanchy
+[2025-12-14T00:02:54.452Z] ✅ Connected to HiveSQL successfully
+[2025-12-14T00:02:54.879Z] 📋 TxTransfers columns: ID, tx_id, type, from, to, amount, amount_symbol, memo, request_id, timestamp
+[2025-12-14T00:02:55.121Z] ✅ HiveSQL query returned 367 results
+[2025-12-14T00:03:15.363Z] 🔍 Connecting to HiveSQL for account: valueplan, date range: 2025-01-01T00:00:00.000Z to 2025-12-31T23:59:59.999Z
+[2025-12-14T00:03:15.367Z] 🔌 Attempting connection to vip.hivesql.io as Hive-blanchy
+[2025-12-14T00:03:15.499Z] ✅ Connected to HiveSQL successfully
+[2025-12-14T00:03:15.680Z] 📋 TxTransfers columns: ID, tx_id, type, from, to, amount, amount_symbol, memo, request_id, timestamp
+[2025-12-14T00:03:15.837Z] ✅ HiveSQL query returned 367 results
+[2025-12-14T00:03:15.860Z] 🔍 Connecting to HiveSQL for account: valueplan, date range: 2025-01-01T00:00:00.000Z to 2025-12-31T23:59:59.999Z
+[2025-12-14T00:03:15.860Z] 🔌 Attempting connection to vip.hivesql.io as Hive-blanchy
+[2025-12-14T00:03:15.983Z] ✅ Connected to HiveSQL successfully
+[2025-12-14T00:03:16.193Z] 📋 TxTransfers columns: ID, tx_id, type, from, to, amount, amount_symbol, memo, request_id, timestamp
+[2025-12-14T00:03:16.341Z] ✅ HiveSQL query returned 367 results
+[2025-12-14T00:03:28.707Z] 🔍 Connecting to HiveSQL for account: valueplan, date range: 2025-01-01T00:00:00.000Z to 2025-12-31T23:59:59.999Z
+[2025-12-14T00:03:28.709Z] 🔌 Attempting connection to vip.hivesql.io as Hive-blanchy
+[2025-12-14T00:03:28.873Z] ✅ Connected to HiveSQL successfully
+[2025-12-14T00:03:29.155Z] 📋 TxTransfers columns: ID, tx_id, type, from, to, amount, amount_symbol, memo, request_id, timestamp
+[2025-12-14T00:03:29.382Z] ✅ HiveSQL query returned 367 results
+[2025-12-14T00:04:19.276Z] 🔍 Connecting to HiveSQL for account: valueplan, date range: 2025-01-01T00:00:00.000Z to 2025-12-31T23:59:59.999Z
+[2025-12-14T00:04:19.279Z] 🔌 Attempting connection to vip.hivesql.io as Hive-blanchy
+[2025-12-14T00:04:19.405Z] ✅ Connected to HiveSQL successfully
+[2025-12-14T00:04:19.634Z] 📋 TxTransfers columns: ID, tx_id, type, from, to, amount, amount_symbol, memo, request_id, timestamp
+[2025-12-14T00:04:19.813Z] ✅ HiveSQL query returned 367 results
+[2025-12-14T00:05:03.780Z] 🔍 Connecting to HiveSQL for account: valueplan, date range: 2025-01-01T00:00:00.000Z to 2025-12-31T23:59:59.999Z
+[2025-12-14T00:05:03.793Z] 🔌 Attempting connection to vip.hivesql.io as Hive-blanchy
+[2025-12-14T00:05:03.990Z] ✅ Connected to HiveSQL successfully
+[2025-12-14T00:05:04.757Z] 📋 TxTransfers columns: ID, tx_id, type, from, to, amount, amount_symbol, memo, request_id, timestamp
+[2025-12-14T00:05:05.187Z] ✅ HiveSQL query returned 367 results
+[2025-12-14T00:05:05.214Z] 🔍 Connecting to HiveSQL for account: valueplan, date range: 2025-01-01T00:00:00.000Z to 2025-12-31T23:59:59.999Z
+[2025-12-14T00:05:05.215Z] 🔌 Attempting connection to vip.hivesql.io as Hive-blanchy
+[2025-12-14T00:05:05.370Z] ✅ Connected to HiveSQL successfully
+[2025-12-14T00:05:05.730Z] 📋 TxTransfers columns: ID, tx_id, type, from, to, amount, amount_symbol, memo, request_id, timestamp
+[2025-12-14T00:05:05.972Z] ✅ HiveSQL query returned 367 results
+[2025-12-14T00:08:45.495Z] 🔍 Connecting to HiveSQL for account: valueplan, date range: 2025-01-01T00:00:00.000Z to 2025-12-31T23:59:59.999Z
+[2025-12-14T00:08:45.507Z] 🔌 Attempting connection to vip.hivesql.io as Hive-blanchy
+[2025-12-14T00:08:45.627Z] ✅ Connected to HiveSQL successfully
+[2025-12-14T00:08:46.303Z] 📋 TxTransfers columns: ID, tx_id, type, from, to, amount, amount_symbol, memo, request_id, timestamp
+[2025-12-14T00:08:46.504Z] ✅ HiveSQL query returned 367 results
+[2025-12-14T00:08:46.532Z] 🔍 Connecting to HiveSQL for account: valueplan, date range: 2025-01-01T00:00:00.000Z to 2025-12-31T23:59:59.999Z
+[2025-12-14T00:08:46.532Z] 🔌 Attempting connection to vip.hivesql.io as Hive-blanchy
+[2025-12-14T00:08:46.668Z] ✅ Connected to HiveSQL successfully
+[2025-12-14T00:08:46.860Z] 📋 TxTransfers columns: ID, tx_id, type, from, to, amount, amount_symbol, memo, request_id, timestamp
+[2025-12-14T00:08:47.007Z] ✅ HiveSQL query returned 367 results
+[2025-12-14T00:11:27.614Z] 🔍 Connecting to HiveSQL for account: valueplan, date range: 2025-01-01T00:00:00.000Z to 2025-12-31T23:59:59.999Z
+[2025-12-14T00:11:27.625Z] 🔌 Attempting connection to vip.hivesql.io as Hive-blanchy
+[2025-12-14T00:11:27.831Z] ✅ Connected to HiveSQL successfully
+[2025-12-14T00:11:28.067Z] 📋 TxTransfers columns: ID, tx_id, type, from, to, amount, amount_symbol, memo, request_id, timestamp
+[2025-12-14T00:11:31.595Z] ✅ HiveSQL query returned 367 results
+[2025-12-14T00:11:31.616Z] 🔍 Connecting to HiveSQL for account: valueplan, date range: 2025-01-01T00:00:00.000Z to 2025-12-31T23:59:59.999Z
+[2025-12-14T00:11:31.617Z] 🔌 Attempting connection to vip.hivesql.io as Hive-blanchy
+[2025-12-14T00:11:31.734Z] ✅ Connected to HiveSQL successfully
+[2025-12-14T00:11:31.879Z] 📋 TxTransfers columns: ID, tx_id, type, from, to, amount, amount_symbol, memo, request_id, timestamp
+[2025-12-14T00:11:41.577Z] ✅ HiveSQL query returned 367 results
+[2025-12-14T00:12:38.521Z] 🔍 Connecting to HiveSQL for account: valueplan, date range: 2025-01-01T00:00:00.000Z to 2025-12-31T23:59:59.999Z
+[2025-12-14T00:12:38.533Z] 🔌 Attempting connection to vip.hivesql.io as Hive-blanchy
+[2025-12-14T00:12:38.649Z] ✅ Connected to HiveSQL successfully
+[2025-12-14T00:12:38.853Z] 📋 TxTransfers columns: ID, tx_id, type, from, to, amount, amount_symbol, memo, request_id, timestamp
+[2025-12-14T00:12:41.845Z] ✅ HiveSQL query returned 367 results
+[2025-12-14T00:12:41.868Z] 🔍 Connecting to HiveSQL for account: valueplan, date range: 2025-01-01T00:00:00.000Z to 2025-12-31T23:59:59.999Z
+[2025-12-14T00:12:41.868Z] 🔌 Attempting connection to vip.hivesql.io as Hive-blanchy
+[2025-12-14T00:12:41.988Z] ✅ Connected to HiveSQL successfully
+[2025-12-14T00:12:43.275Z] 📋 TxTransfers columns: ID, tx_id, type, from, to, amount, amount_symbol, memo, request_id, timestamp
+[2025-12-14T00:12:51.634Z] ✅ HiveSQL query returned 367 results

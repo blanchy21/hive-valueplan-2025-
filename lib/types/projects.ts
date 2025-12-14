@@ -23,10 +23,21 @@ export interface ProjectKPI {
   [key: string]: string | number | undefined;
 }
 
+export interface ProjectVerticalsData {
+  category?: string;
+  type?: string;
+  status?: string;
+  totalHbd?: number;
+  totalHive?: number;
+  totalHiveInHbd?: number;
+  combinedTotalHbd?: number;
+}
+
 export interface Project {
   name: string;
   url?: string;
   kpis?: ProjectKPI;
+  verticals?: ProjectVerticalsData;
 }
 
 export interface ProjectsData {
