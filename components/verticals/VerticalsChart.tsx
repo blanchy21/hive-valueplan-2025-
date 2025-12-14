@@ -91,6 +91,13 @@ export default function VerticalsChart({ data }: VerticalsChartProps) {
           size: 16,
           weight: 'bold' as const,
         },
+        color: '#ffffff',
+      },
+      legend: {
+        ...chartOptions.plugins.legend,
+        labels: {
+          color: '#94a3b8',
+        },
       },
       tooltip: {
         callbacks: {
@@ -101,13 +108,25 @@ export default function VerticalsChart({ data }: VerticalsChartProps) {
       },
     },
     scales: {
+      x: {
+        ticks: {
+          color: '#94a3b8',
+        },
+        grid: {
+          color: '#334155',
+        },
+      },
       y: {
         beginAtZero: true,
         ticks: {
           stepSize: 1,
+          color: '#94a3b8',
           callback: function(value: string | number) {
             return Number(value);
           },
+        },
+        grid: {
+          color: '#334155',
         },
       },
     },
@@ -124,6 +143,13 @@ export default function VerticalsChart({ data }: VerticalsChartProps) {
           size: 16,
           weight: 'bold' as const,
         },
+        color: '#ffffff',
+      },
+      legend: {
+        ...chartOptions.plugins.legend,
+        labels: {
+          color: '#94a3b8',
+        },
       },
       tooltip: {
         callbacks: {
@@ -134,13 +160,25 @@ export default function VerticalsChart({ data }: VerticalsChartProps) {
       },
     },
     scales: {
+      x: {
+        ticks: {
+          color: '#94a3b8',
+        },
+        grid: {
+          color: '#334155',
+        },
+      },
       y: {
         beginAtZero: true,
         ticks: {
           stepSize: 1,
+          color: '#94a3b8',
           callback: function(value: string | number) {
             return Number(value);
           },
+        },
+        grid: {
+          color: '#334155',
         },
       },
     },
@@ -157,6 +195,13 @@ export default function VerticalsChart({ data }: VerticalsChartProps) {
           size: 16,
           weight: 'bold' as const,
         },
+        color: '#ffffff',
+      },
+      legend: {
+        ...chartOptions.plugins.legend,
+        labels: {
+          color: '#94a3b8',
+        },
       },
       tooltip: {
         callbacks: {
@@ -169,15 +214,25 @@ export default function VerticalsChart({ data }: VerticalsChartProps) {
     scales: {
       x: {
         stacked: true,
+        ticks: {
+          color: '#94a3b8',
+        },
+        grid: {
+          color: '#334155',
+        },
       },
       y: {
         stacked: true,
         beginAtZero: true,
         ticks: {
           stepSize: 1,
+          color: '#94a3b8',
           callback: function(value: string | number) {
             return Number(value);
           },
+        },
+        grid: {
+          color: '#334155',
         },
       },
     },
@@ -186,21 +241,21 @@ export default function VerticalsChart({ data }: VerticalsChartProps) {
   return (
     <div className="mb-8 space-y-8">
       {/* Projects by Category */}
-      <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+      <div className="rounded-lg border border-[#334155] bg-[#1e293b] p-6 shadow-sm">
         <div className="h-80">
           <Bar data={categoryData} options={categoryOptions} />
         </div>
       </div>
 
       {/* Projects by Status */}
-      <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+      <div className="rounded-lg border border-[#334155] bg-[#1e293b] p-6 shadow-sm">
         <div className="h-80">
           <Bar data={statusData} options={statusOptions} />
         </div>
       </div>
 
       {/* Stacked Chart - Status by Category */}
-      <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+      <div className="rounded-lg border border-[#334155] bg-[#1e293b] p-6 shadow-sm">
         <div className="h-80">
           <Bar data={stackedData} options={stackedOptions} />
         </div>

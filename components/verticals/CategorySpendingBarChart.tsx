@@ -45,6 +45,9 @@ export default function CategorySpendingBarChart({ categories }: CategorySpendin
     plugins: {
       legend: {
         position: 'top' as const,
+        labels: {
+          color: '#94a3b8',
+        },
       },
       tooltip: {
         callbacks: {
@@ -63,14 +66,24 @@ export default function CategorySpendingBarChart({ categories }: CategorySpendin
     scales: {
       x: {
         stacked: false,
+        ticks: {
+          color: '#94a3b8',
+        },
+        grid: {
+          color: '#334155',
+        },
       },
       y: {
         beginAtZero: true,
         stacked: false,
         ticks: {
+          color: '#94a3b8',
           callback: function(value: string | number) {
             return formatCurrency(Number(value), 0);
           },
+        },
+        grid: {
+          color: '#334155',
         },
       },
     },

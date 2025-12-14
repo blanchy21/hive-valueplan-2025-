@@ -2,25 +2,35 @@
 
 import { useEffect, useState } from 'react';
 import { Metrics } from '@/lib/types';
+import { VerticalsData } from '@/lib/types/verticals';
 import MetricCard from '@/components/dashboard/MetricCard';
 import { formatCurrency } from '@/lib/utils/format';
 
 export default function ExecutiveSummary() {
   const [metrics, setMetrics] = useState<Metrics | null>(null);
+  const [verticals, setVerticals] = useState<VerticalsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     // Use setTimeout to avoid synchronous setState in effect
     const timer = setTimeout(() => setMounted(true), 0);
-    fetch('/api/metrics?year=2025')
-      .then(res => res.json())
-      .then(data => {
-        setMetrics(data);
+    
+    // Fetch both metrics and verticals data
+    Promise.all([
+      fetch('/api/metrics?year=2025').then(res => res.json()),
+      fetch('/api/verticals').then(res => res.json())
+    ])
+      .then(([metricsData, verticalsData]) => {
+        setMetrics(metricsData);
+        // Only set verticals if there's no error
+        if (!verticalsData.error) {
+          setVerticals(verticalsData);
+        }
         setLoading(false);
       })
       .catch(err => {
-        console.error('Error fetching metrics:', err);
+        console.error('Error fetching data:', err);
         setLoading(false);
       });
     return () => clearTimeout(timer);
@@ -127,6 +137,47 @@ export default function ExecutiveSummary() {
           />
         </div>
       </div>
+
+      {/* Strategic Verticals Section */}
+      {verticals && verticals.categories && verticals.categories.length > 0 && (
+        <div>
+          <h3 className="mb-4 text-xl font-semibold text-white">Strategic Verticals</h3>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {verticals.categories
+              .sort((a, b) => (b.combinedTotalHbd || 0) - (a.combinedTotalHbd || 0))
+              .map((category, index) => {
+                const ongoingCount = category.projects.filter(p => p.status === 'Ongoing').length;
+                const totalProjects = category.projects.length;
+                return (
+                  <div
+                    key={`${category.name}-${index}`}
+                    className="rounded-lg border border-[#334155] bg-[#1e293b] p-6 shadow-sm"
+                  >
+                    <h4 className="mb-3 text-base font-semibold text-white">{category.name}</h4>
+                    <div className="space-y-3">
+                      <div>
+                        <div className="text-2xl font-bold text-[#ef4444]">
+                          {formatCurrency(category.combinedTotalHbd || 0)}
+                        </div>
+                        <div className="text-xs text-[#94a3b8]">2025 Spending</div>
+                      </div>
+                      <div className="pt-2 border-t border-[#334155]">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-[#94a3b8]">Projects</span>
+                          <span className="font-semibold text-white">{totalProjects}</span>
+                        </div>
+                        <div className="flex items-center justify-between text-sm mt-1">
+                          <span className="text-[#94a3b8]">Active</span>
+                          <span className="font-semibold text-[#ef4444]">{ongoingCount}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <div className="rounded-lg border border-[#334155] bg-[#1e293b] p-6 shadow-sm">

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
@@ -19,9 +20,9 @@ export default function Header() {
 
   const navLinks = [
     { href: '/', label: 'Executive Summary' },
-    { href: '/dashboard', label: 'Dashboard' },
-    { href: '/transactions', label: 'Transactions' },
     { href: '/verticals', label: 'Verticals' },
+    { href: '/transactions', label: 'Transactions' },
+    { href: '/dashboard', label: 'Dashboard' },
     { href: '/projects', label: 'Projects' },
     { href: '/planning', label: 'Planning' },
     { href: '/docs', label: 'Docs' },
@@ -35,13 +36,20 @@ export default function Header() {
       <header className="border-b border-[#334155] bg-[#1e293b] shadow-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
-            <div className="flex items-center">
+            <div className="flex items-center gap-3">
               <Link 
                 href="/" 
-                className="text-xl font-bold text-white"
+                className="flex items-center gap-3"
                 suppressHydrationWarning
               >
-                Value Plan Dashboard
+                <Image
+                  src="/logo.png"
+                  alt="Hive Logo"
+                  width={32}
+                  height={32}
+                  className="h-8 w-8"
+                />
+                <span className="text-xl font-bold text-white">Value Plan Dashboard</span>
               </Link>
             </div>
             <nav className="hidden md:flex md:space-x-1">
@@ -82,13 +90,20 @@ export default function Header() {
     <header className="border-b border-[#334155] bg-[#1e293b] shadow-sm">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          <div className="flex items-center">
+          <div className="flex items-center gap-3">
             <Link 
               href="/" 
-              className="text-xl font-bold text-white"
+              className="flex items-center gap-3"
               suppressHydrationWarning
             >
-              Value Plan Dashboard
+              <Image
+                src="/logo.png"
+                alt="Hive Logo"
+                width={32}
+                height={32}
+                className="h-8 w-8"
+              />
+              <span className="text-xl font-bold text-white">Value Plan Dashboard</span>
             </Link>
           </div>
           

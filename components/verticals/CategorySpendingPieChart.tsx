@@ -44,6 +44,9 @@ export default function CategorySpendingPieChart({ categories }: CategorySpendin
     plugins: {
       legend: {
         position: 'right' as const,
+        labels: {
+          color: '#94a3b8',
+        },
       },
       tooltip: {
         callbacks: {
