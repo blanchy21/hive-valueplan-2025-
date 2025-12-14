@@ -1,6 +1,7 @@
 'use client';
 
 import { Line } from 'react-chartjs-2';
+import type { TooltipItem } from 'chart.js';
 import { formatCurrency } from '@/lib/utils/format';
 import { format, parseISO } from 'date-fns';
 import { chartOptions } from '@/lib/chart-config';
@@ -79,7 +80,7 @@ export default function MonthlyTrendChart({ data }: MonthlyTrendChartProps) {
       },
       tooltip: {
         callbacks: {
-          label: function(context: any) {
+          label: function(context: TooltipItem<'line'>) {
             const label = context.dataset.label || '';
             const value = context.parsed.y || 0;
             return `${label}: ${formatCurrency(value, 2)} HBD`;

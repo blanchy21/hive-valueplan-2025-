@@ -21,8 +21,8 @@ export default function Header() {
   const navLinks = [
     { href: '/', label: 'Executive Summary' },
     { href: '/verticals', label: 'Verticals' },
-    { href: '/transactions', label: 'Transactions' },
     { href: '/dashboard', label: 'Dashboard' },
+    { href: '/transactions', label: 'Transactions' },
     { href: '/projects', label: 'Projects' },
     { href: '/planning', label: 'Planning' },
     { href: '/docs', label: 'Docs' },
