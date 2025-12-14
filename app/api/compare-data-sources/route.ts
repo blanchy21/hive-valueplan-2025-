@@ -38,7 +38,7 @@ export async function GET(request: Request): Promise<NextResponse> {
         skipEmptyLines: true,
       });
       
-      hiveSQLTransfers = parsed.data.map((row: Record<string, string>) => ({
+      hiveSQLTransfers = (parsed.data as Record<string, string>[]).map((row) => ({
         trx_id: row['Transaction ID'] || '',
         timestamp: row['Timestamp'] || '',
         from: row['From Account'] || '',
