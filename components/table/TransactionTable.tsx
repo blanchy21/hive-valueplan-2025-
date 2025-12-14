@@ -29,8 +29,8 @@ interface SortIconProps {
 }
 
 function SortIcon({ field, currentSortField, sortDirection }: SortIconProps) {
-  if (currentSortField !== field) return <span className="text-gray-400">↕</span>;
-  return sortDirection === 'asc' ? <span>↑</span> : <span>↓</span>;
+  if (currentSortField !== field) return <span className="text-[#64748b]">↕</span>;
+  return sortDirection === 'asc' ? <span className="text-[#ef4444]">↑</span> : <span className="text-[#ef4444]">↓</span>;
 }
 
 export default function TransactionTable({ transactions, filters }: TransactionTableProps) {
@@ -159,118 +159,118 @@ export default function TransactionTable({ transactions, filters }: TransactionT
   return (
     <div>
       <div className="mb-4 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-[#94a3b8]">
           Showing {paginatedTransactions.length} of {filteredTransactions.length} transactions
         </div>
         <button
           onClick={exportToCSV}
-          className="w-full rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 sm:w-auto"
+          className="w-full rounded-md bg-[#ef4444] px-4 py-2 text-sm font-medium text-white hover:bg-[#dc2626] sm:w-auto"
         >
           Export CSV
         </button>
       </div>
 
-      <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+      <div className="overflow-x-auto rounded-lg border border-[#334155] bg-[#1e293b] shadow-sm">
+        <table className="min-w-full divide-y divide-[#334155]">
+          <thead className="bg-[#0f172a]">
             <tr>
               <th
-                className="cursor-pointer px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 hover:bg-gray-100 sm:px-6"
+                className="cursor-pointer px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#94a3b8] hover:bg-[#334155] sm:px-6"
                 onClick={() => handleSort('wallet')}
               >
                 Wallet <SortIcon field="wallet" currentSortField={sortField} sortDirection={sortDirection} />
               </th>
               <th
-                className="cursor-pointer px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 hover:bg-gray-100 sm:px-6"
+                className="cursor-pointer px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#94a3b8] hover:bg-[#334155] sm:px-6"
                 onClick={() => handleSort('date')}
               >
                 Date <SortIcon field="date" currentSortField={sortField} sortDirection={sortDirection} />
               </th>
               <th
-                className="hidden cursor-pointer px-3 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500 hover:bg-gray-100 sm:table-cell sm:px-6"
+                className="hidden cursor-pointer px-3 py-3 text-right text-xs font-medium uppercase tracking-wider text-[#94a3b8] hover:bg-[#334155] sm:table-cell sm:px-6"
                 onClick={() => handleSort('hbd')}
               >
                 HBD <SortIcon field="hbd" currentSortField={sortField} sortDirection={sortDirection} />
               </th>
               <th
-                className="hidden cursor-pointer px-3 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500 hover:bg-gray-100 lg:table-cell lg:px-6"
+                className="hidden cursor-pointer px-3 py-3 text-right text-xs font-medium uppercase tracking-wider text-[#94a3b8] hover:bg-[#334155] lg:table-cell lg:px-6"
                 onClick={() => handleSort('hive')}
               >
                 Hive <SortIcon field="hive" currentSortField={sortField} sortDirection={sortDirection} />
               </th>
-              <th className="hidden px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 lg:table-cell lg:px-6">
+              <th className="hidden px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#94a3b8] lg:table-cell lg:px-6">
                 Event/Project
               </th>
-              <th className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 sm:px-6">
+              <th className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#94a3b8] sm:px-6">
                 Country
               </th>
-              <th className="hidden px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 md:table-cell md:px-6">
+              <th className="hidden px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#94a3b8] md:table-cell md:px-6">
                 Category
               </th>
-              <th className="hidden px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 lg:table-cell lg:px-6">
+              <th className="hidden px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#94a3b8] lg:table-cell lg:px-6">
                 Event Type
               </th>
-              <th className="hidden px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 xl:table-cell xl:px-6">
+              <th className="hidden px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#94a3b8] xl:table-cell xl:px-6">
                 Memo/Comment
               </th>
               <th
-                className="cursor-pointer px-3 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500 hover:bg-gray-100 sm:px-6"
+                className="cursor-pointer px-3 py-3 text-right text-xs font-medium uppercase tracking-wider text-[#94a3b8] hover:bg-[#334155] sm:px-6"
                 onClick={() => handleSort('totalSpend')}
               >
                 Total <SortIcon field="totalSpend" currentSortField={sortField} sortDirection={sortDirection} />
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200 bg-white">
+          <tbody className="divide-y divide-[#334155]">
             {paginatedTransactions.map((tx, index) => (
-              <tr key={index} className="hover:bg-gray-50">
-                <td className="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900 sm:px-6">{tx.wallet}</td>
-                <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-700 sm:px-6">
+              <tr key={index} className="hover:bg-[#0f172a]">
+                <td className="whitespace-nowrap px-3 py-4 text-sm font-medium text-white sm:px-6">{tx.wallet}</td>
+                <td className="whitespace-nowrap px-3 py-4 text-sm text-[#94a3b8] sm:px-6">
                   {formatDate(parseDate(tx.date))}
                 </td>
-                <td className="hidden whitespace-nowrap px-3 py-4 text-right text-sm text-gray-700 sm:table-cell sm:px-6">
+                <td className="hidden whitespace-nowrap px-3 py-4 text-right text-sm text-[#94a3b8] sm:table-cell sm:px-6">
                   {formatCurrency(tx.hbd)}
                 </td>
-                <td className="hidden whitespace-nowrap px-3 py-4 text-right text-sm text-gray-700 lg:table-cell lg:px-6">
+                <td className="hidden whitespace-nowrap px-3 py-4 text-right text-sm text-[#94a3b8] lg:table-cell lg:px-6">
                   {formatCurrency(tx.hive)}
                 </td>
-                <td className="hidden px-3 py-4 text-sm text-gray-700 lg:table-cell lg:px-6">{tx.eventProject}</td>
-                <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-700 sm:px-6">{tx.country}</td>
-                <td className="hidden whitespace-nowrap px-3 py-4 text-sm text-gray-700 md:table-cell md:px-6">{tx.category}</td>
-                <td className="hidden whitespace-nowrap px-3 py-4 text-sm text-gray-700 lg:table-cell lg:px-6">{tx.eventType}</td>
-                <td className="hidden max-w-xs px-3 py-4 text-sm text-gray-700 xl:table-cell xl:px-6">
+                <td className="hidden px-3 py-4 text-sm text-[#94a3b8] lg:table-cell lg:px-6">{tx.eventProject}</td>
+                <td className="whitespace-nowrap px-3 py-4 text-sm text-[#94a3b8] sm:px-6">{tx.country}</td>
+                <td className="hidden whitespace-nowrap px-3 py-4 text-sm text-[#94a3b8] md:table-cell md:px-6">{tx.category}</td>
+                <td className="hidden whitespace-nowrap px-3 py-4 text-sm text-[#94a3b8] lg:table-cell lg:px-6">{tx.eventType}</td>
+                <td className="hidden max-w-xs px-3 py-4 text-sm text-[#94a3b8] xl:table-cell xl:px-6">
                   {tx.memo ? (
                     <span className="truncate block" title={tx.memo}>
                       {tx.memo}
                     </span>
                   ) : (
-                    <span className="text-gray-400 italic">—</span>
+                    <span className="text-[#64748b] italic">—</span>
                   )}
                 </td>
-                <td className="whitespace-nowrap px-3 py-4 text-right text-sm font-semibold text-gray-900 sm:px-6">
+                <td className="whitespace-nowrap px-3 py-4 text-right text-sm font-semibold text-[#ef4444] sm:px-6">
                   {formatCurrency(tx.totalSpend || 0)}
                 </td>
               </tr>
             ))}
           </tbody>
           {showTotals && totals && (
-            <tfoot className="bg-gray-50 border-t-2 border-gray-300">
+            <tfoot className="bg-[#0f172a] border-t-2 border-[#334155]">
               <tr>
-                <td className="whitespace-nowrap px-3 py-4 text-sm font-bold text-gray-900 sm:px-6" colSpan={2}>
+                <td className="whitespace-nowrap px-3 py-4 text-sm font-bold text-white sm:px-6" colSpan={2}>
                   Total ({filteredTransactions.length} transactions)
                 </td>
-                <td className="hidden whitespace-nowrap px-3 py-4 text-right text-sm font-bold text-gray-900 sm:table-cell sm:px-6">
+                <td className="hidden whitespace-nowrap px-3 py-4 text-right text-sm font-bold text-white sm:table-cell sm:px-6">
                   {formatCurrency(totals.totalHbd)}
                 </td>
-                <td className="hidden whitespace-nowrap px-3 py-4 text-right text-sm font-bold text-gray-900 lg:table-cell lg:px-6">
+                <td className="hidden whitespace-nowrap px-3 py-4 text-right text-sm font-bold text-white lg:table-cell lg:px-6">
                   {formatCurrency(totals.totalHive)}
                 </td>
-                <td className="hidden px-3 py-4 text-sm text-gray-700 lg:table-cell lg:px-6"></td>
-                <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-700 sm:px-6"></td>
-                <td className="hidden whitespace-nowrap px-3 py-4 text-sm text-gray-700 md:table-cell md:px-6"></td>
-                <td className="hidden whitespace-nowrap px-3 py-4 text-sm text-gray-700 lg:table-cell lg:px-6"></td>
-                <td className="hidden px-3 py-4 text-sm text-gray-700 xl:table-cell xl:px-6"></td>
-                <td className="whitespace-nowrap px-3 py-4 text-right text-sm font-bold text-gray-900 sm:px-6">
+                <td className="hidden px-3 py-4 text-sm text-[#94a3b8] lg:table-cell lg:px-6"></td>
+                <td className="whitespace-nowrap px-3 py-4 text-sm text-[#94a3b8] sm:px-6"></td>
+                <td className="hidden whitespace-nowrap px-3 py-4 text-sm text-[#94a3b8] md:table-cell md:px-6"></td>
+                <td className="hidden whitespace-nowrap px-3 py-4 text-sm text-[#94a3b8] lg:table-cell lg:px-6"></td>
+                <td className="hidden px-3 py-4 text-sm text-[#94a3b8] xl:table-cell xl:px-6"></td>
+                <td className="whitespace-nowrap px-3 py-4 text-right text-sm font-bold text-[#ef4444] sm:px-6">
                   {formatCurrency(totals.totalSpend)}
                 </td>
               </tr>
@@ -281,21 +281,21 @@ export default function TransactionTable({ transactions, filters }: TransactionT
 
       {totalPages > 1 && (
         <div className="mt-4 flex flex-col items-center justify-between gap-4 sm:flex-row">
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-[#94a3b8]">
             Page {currentPage} of {totalPages}
           </div>
           <div className="flex space-x-2">
             <button
               onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
               disabled={currentPage === 1}
-              className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="rounded-md border border-[#334155] bg-[#1e293b] px-4 py-2 text-sm font-medium text-white hover:bg-[#334155] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Previous
             </button>
             <button
               onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
               disabled={currentPage === totalPages}
-              className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="rounded-md border border-[#334155] bg-[#1e293b] px-4 py-2 text-sm font-medium text-white hover:bg-[#334155] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Next
             </button>

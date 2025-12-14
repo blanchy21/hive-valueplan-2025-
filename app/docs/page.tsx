@@ -31,14 +31,14 @@ export default function DocsPage() {
   if (!mounted || loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="text-gray-600">Loading documentation...</div>
+        <div className="text-[#94a3b8]">Loading documentation...</div>
       </div>
     );
   }
 
   if (!content) {
     return (
-      <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-800">
+      <div className="rounded-lg border border-[#ef4444]/50 bg-[#ef4444]/10 p-4 text-[#ef4444]">
         Unable to load documentation. Please try again later.
       </div>
     );
@@ -47,11 +47,11 @@ export default function DocsPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-gray-900">Documentation</h1>
-        <p className="mt-2 text-lg text-gray-600">HackMD documentation and resources</p>
+        <h1 className="text-4xl font-bold text-white">Documentation</h1>
+        <p className="mt-2 text-lg text-[#94a3b8]">HackMD documentation and resources</p>
       </div>
 
-      <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+      <div className="rounded-lg border border-[#334155] bg-[#1e293b] p-6 shadow-sm">
         <MarkdownRenderer content={content.content} />
       </div>
     </div>

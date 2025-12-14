@@ -29,14 +29,14 @@ export default function ExecutiveSummary() {
   if (!mounted || loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="text-gray-600">Loading metrics...</div>
+        <div className="text-[#94a3b8]">Loading metrics...</div>
       </div>
     );
   }
 
   if (!metrics) {
     return (
-      <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-800">
+      <div className="rounded-lg border border-[#ef4444]/50 bg-[#ef4444]/10 p-4 text-[#ef4444]">
         Unable to load metrics. Please try again later.
       </div>
     );
@@ -46,10 +46,10 @@ export default function ExecutiveSummary() {
     <div className="space-y-8">
       <div>
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-gray-900">2025 Year Overview</h2>
+          <h2 className="text-2xl font-bold text-white">2025 Year Overview</h2>
           {metrics && metrics.sourceOfTruth && (
-            <div className="text-xs text-gray-500">
-              Source: <span className="font-semibold text-green-600">{metrics.sourceOfTruth}</span>
+            <div className="text-xs text-[#94a3b8]">
+              Source: <span className="font-semibold text-green-400">{metrics.sourceOfTruth}</span>
             </div>
           )}
         </div>
@@ -77,29 +77,29 @@ export default function ExecutiveSummary() {
         </div>
       </div>
 
-      <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-        <h3 className="mb-4 text-xl font-semibold text-gray-900">Strategic Initiatives</h3>
-        <div className="space-y-4 text-gray-700">
+      <div className="rounded-lg border border-[#334155] bg-[#1e293b] p-6 shadow-sm">
+        <h3 className="mb-4 text-xl font-semibold text-white">Strategic Initiatives</h3>
+        <div className="space-y-4 text-[#94a3b8]">
           <div>
-            <h4 className="font-semibold text-gray-900">1. Strategic Partnerships</h4>
+            <h4 className="font-semibold text-white">1. Strategic Partnerships</h4>
             <p className="mt-1">
               Engagement with blockchain networks, DApps, and traditional finance entities to expand Hive&apos;s ecosystem.
             </p>
           </div>
           <div>
-            <h4 className="font-semibold text-gray-900">2. Community Engagement</h4>
+            <h4 className="font-semibold text-white">2. Community Engagement</h4>
             <p className="mt-1">
               Workshops, events, and community-driven initiatives to grow user base and increase retention.
             </p>
           </div>
           <div>
-            <h4 className="font-semibold text-gray-900">3. Brand Awareness</h4>
+            <h4 className="font-semibold text-white">3. Brand Awareness</h4>
             <p className="mt-1">
               Media expansion, viral campaigns, and strategic marketing to increase Hive&apos;s visibility.
             </p>
           </div>
           <div>
-            <h4 className="font-semibold text-gray-900">4. HBD Adoption</h4>
+            <h4 className="font-semibold text-white">4. HBD Adoption</h4>
             <p className="mt-1">
               Focus on B2B partnerships and initiatives to drive adoption of Hive Backed Dollars.
             </p>
@@ -108,7 +108,7 @@ export default function ExecutiveSummary() {
       </div>
 
       <div>
-        <h3 className="mb-4 text-xl font-semibold text-gray-900">Loans & Refunds</h3>
+        <h3 className="mb-4 text-xl font-semibold text-white">Loans & Refunds</h3>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           <MetricCard
             title="Total Loans"
@@ -129,31 +129,31 @@ export default function ExecutiveSummary() {
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-          <h3 className="mb-4 text-lg font-semibold text-gray-900">Top Categories</h3>
+        <div className="rounded-lg border border-[#334155] bg-[#1e293b] p-6 shadow-sm">
+          <h3 className="mb-4 text-lg font-semibold text-white">Top Categories</h3>
           <div className="space-y-2">
             {Object.entries(metrics.spendingByCategory)
               .sort(([, a], [, b]) => b - a)
               .slice(0, 5)
               .map(([category, amount]) => (
                 <div key={category} className="flex items-center justify-between">
-                  <span className="text-gray-700">{category}</span>
-                  <span className="font-semibold text-gray-900">{formatCurrency(amount)}</span>
+                  <span className="text-[#94a3b8]">{category}</span>
+                  <span className="font-semibold text-[#ef4444]">{formatCurrency(amount)}</span>
                 </div>
               ))}
           </div>
         </div>
 
-        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-          <h3 className="mb-4 text-lg font-semibold text-gray-900">Top Countries</h3>
+        <div className="rounded-lg border border-[#334155] bg-[#1e293b] p-6 shadow-sm">
+          <h3 className="mb-4 text-lg font-semibold text-white">Top Countries</h3>
           <div className="space-y-2">
             {Object.entries(metrics.spendingByCountry)
               .sort(([, a], [, b]) => b - a)
               .slice(0, 5)
               .map(([country, amount]) => (
                 <div key={country} className="flex items-center justify-between">
-                  <span className="text-gray-700">{country}</span>
-                  <span className="font-semibold text-gray-900">{formatCurrency(amount)}</span>
+                  <span className="text-[#94a3b8]">{country}</span>
+                  <span className="font-semibold text-[#ef4444]">{formatCurrency(amount)}</span>
                 </div>
               ))}
           </div>

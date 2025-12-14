@@ -42,14 +42,14 @@ export default function VerticalsPage() {
   if (!mounted || loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="text-gray-600">Loading verticals data...</div>
+        <div className="text-[#94a3b8]">Loading verticals data...</div>
       </div>
     );
   }
 
   if (!data) {
     return (
-      <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-800">
+      <div className="rounded-lg border border-[#ef4444]/50 bg-[#ef4444]/10 p-4 text-[#ef4444]">
         <h3 className="font-semibold mb-2">Unable to load verticals data</h3>
         <p>Please check:</p>
         <ul className="list-disc list-inside mt-2 space-y-1">
@@ -65,24 +65,24 @@ export default function VerticalsPage() {
   if (data && 'error' in data && data.error) {
     const errorData = data as VerticalsData & { error: string; details?: string; url?: string; debug?: unknown };
     return (
-      <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-6 text-yellow-800">
-        <h3 className="font-semibold mb-2 text-lg">Warning: {String(errorData.error)}</h3>
+      <div className="rounded-lg border border-[#475569] bg-[#1e293b] p-6 text-[#94a3b8]">
+        <h3 className="font-semibold mb-2 text-lg text-white">Warning: {String(errorData.error)}</h3>
         {errorData.details && (
           <p className="mb-2 text-sm">{String(errorData.details)}</p>
         )}
         {errorData.url && (
-          <p className="mb-2 text-xs font-mono bg-yellow-100 p-2 rounded">{String(errorData.url)}</p>
+          <p className="mb-2 text-xs font-mono bg-[#0f172a] border border-[#334155] p-2 rounded text-[#94a3b8]">{String(errorData.url)}</p>
         )}
         {errorData.debug !== undefined && errorData.debug !== null && (
           <details className="mt-4">
-            <summary className="cursor-pointer font-medium">Debug Information</summary>
-            <pre className="mt-2 text-xs bg-yellow-100 p-2 rounded overflow-auto">
+            <summary className="cursor-pointer font-medium text-white">Debug Information</summary>
+            <pre className="mt-2 text-xs bg-[#0f172a] border border-[#334155] p-2 rounded overflow-auto text-[#94a3b8]">
               {JSON.stringify(errorData.debug, null, 2)}
             </pre>
           </details>
         )}
         <p className="mt-4 text-sm">
-          If the verticals data is in a different tab, update <code className="bg-yellow-100 px-1 rounded">SHEET_TABS.VERTICALS</code> in <code className="bg-yellow-100 px-1 rounded">lib/utils/sheets.ts</code>
+          If the verticals data is in a different tab, update <code className="bg-[#0f172a] border border-[#334155] px-1 rounded text-[#94a3b8]">SHEET_TABS.VERTICALS</code> in <code className="bg-[#0f172a] border border-[#334155] px-1 rounded text-[#94a3b8]">lib/utils/sheets.ts</code>
         </p>
       </div>
     );
@@ -105,7 +105,7 @@ export default function VerticalsPage() {
   // Ensure data has the required properties
   if (!data || !('projects' in data) || !('categories' in data)) {
     return (
-      <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-800">
+      <div className="rounded-lg border border-[#ef4444]/50 bg-[#ef4444]/10 p-4 text-[#ef4444]">
         Invalid data structure received from API.
       </div>
     );
@@ -114,29 +114,29 @@ export default function VerticalsPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-gray-900">Verticals & Initiatives</h1>
-        <p className="mt-2 text-lg text-gray-600">Strategic initiatives and project tracking</p>
+        <h1 className="text-4xl font-bold text-white">Verticals & Initiatives</h1>
+        <p className="mt-2 text-lg text-[#94a3b8]">Strategic initiatives and project tracking</p>
       </div>
 
       {/* Summary Cards */}
       <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-4">
-        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-          <h3 className="text-sm font-medium text-gray-600">Total Projects</h3>
-          <p className="mt-2 text-3xl font-bold text-gray-900">{data.projects.length}</p>
+        <div className="rounded-lg border border-[#334155] bg-[#1e293b] p-6 shadow-sm">
+          <h3 className="text-sm font-medium text-[#94a3b8]">Total Projects</h3>
+          <p className="mt-2 text-3xl font-bold text-white">{data.projects.length}</p>
         </div>
-        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-          <h3 className="text-sm font-medium text-gray-600">Categories</h3>
-          <p className="mt-2 text-3xl font-bold text-gray-900">{data.categories.length}</p>
+        <div className="rounded-lg border border-[#334155] bg-[#1e293b] p-6 shadow-sm">
+          <h3 className="text-sm font-medium text-[#94a3b8]">Categories</h3>
+          <p className="mt-2 text-3xl font-bold text-white">{data.categories.length}</p>
         </div>
-        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-          <h3 className="text-sm font-medium text-gray-600">Active Projects</h3>
-          <p className="mt-2 text-3xl font-bold text-green-600">
+        <div className="rounded-lg border border-[#334155] bg-[#1e293b] p-6 shadow-sm">
+          <h3 className="text-sm font-medium text-[#94a3b8]">Active Projects</h3>
+          <p className="mt-2 text-3xl font-bold text-[#ef4444]">
             {data.byStatus['Ongoing']?.length || 0}
           </p>
         </div>
-        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-          <h3 className="text-sm font-medium text-gray-600">Total Spending (2025)</h3>
-          <p className="mt-2 text-3xl font-bold text-blue-600">
+        <div className="rounded-lg border border-[#334155] bg-[#1e293b] p-6 shadow-sm">
+          <h3 className="text-sm font-medium text-[#94a3b8]">Total Spending (2025)</h3>
+          <p className="mt-2 text-3xl font-bold text-[#ef4444]">
             {formatCurrency(
               data.categories.reduce((sum, cat) => sum + (cat.combinedTotalHbd || 0), 0),
               2

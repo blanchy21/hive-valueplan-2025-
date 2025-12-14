@@ -40,7 +40,7 @@ export default function TransactionsPage() {
   if (!mounted || loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="text-gray-600">Loading transactions...</div>
+        <div className="text-[#94a3b8]">Loading transactions...</div>
       </div>
     );
   }
@@ -48,8 +48,8 @@ export default function TransactionsPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-gray-900">Transactions</h1>
-        <p className="mt-2 text-lg text-gray-600">View and filter all Value Plan transactions</p>
+        <h1 className="text-4xl font-bold text-white">Transactions</h1>
+        <p className="mt-2 text-lg text-[#94a3b8]">View and filter all Value Plan transactions</p>
       </div>
 
       <FilterBar transactions={transactions} filters={filters} onFilterChange={setFilters} />

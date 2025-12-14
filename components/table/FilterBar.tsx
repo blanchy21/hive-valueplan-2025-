@@ -57,25 +57,25 @@ export default function FilterBar({ transactions, filters, onFilterChange }: Fil
   };
 
   return (
-    <div className="mb-6 space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+    <div className="mb-6 space-y-4 rounded-lg border border-[#334155] bg-[#1e293b] p-4 shadow-sm">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Search</label>
+          <label className="mb-1 block text-sm font-medium text-[#94a3b8]">Search</label>
           <input
             type="text"
             value={filters.search || ''}
             onChange={e => handleChange('search', e.target.value)}
             placeholder="Search transactions..."
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full rounded-md border border-[#334155] bg-[#0f172a] px-3 py-2 text-sm text-white placeholder-[#64748b] focus:border-[#ef4444] focus:outline-none focus:ring-1 focus:ring-[#ef4444]"
           />
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Country</label>
+          <label className="mb-1 block text-sm font-medium text-[#94a3b8]">Country</label>
           <select
             value={filters.country || ''}
             onChange={e => handleChange('country', e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full rounded-md border border-[#334155] bg-[#0f172a] px-3 py-2 text-sm text-white focus:border-[#ef4444] focus:outline-none focus:ring-1 focus:ring-[#ef4444]"
           >
             <option value="">All Countries</option>
             {countries.map(country => (
@@ -87,11 +87,11 @@ export default function FilterBar({ transactions, filters, onFilterChange }: Fil
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Category</label>
+          <label className="mb-1 block text-sm font-medium text-[#94a3b8]">Category</label>
           <select
             value={filters.category || ''}
             onChange={e => handleChange('category', e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full rounded-md border border-[#334155] bg-[#0f172a] px-3 py-2 text-sm text-white focus:border-[#ef4444] focus:outline-none focus:ring-1 focus:ring-[#ef4444]"
           >
             <option value="">All Categories</option>
             {categories.map(category => (
@@ -103,11 +103,11 @@ export default function FilterBar({ transactions, filters, onFilterChange }: Fil
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Event Type</label>
+          <label className="mb-1 block text-sm font-medium text-[#94a3b8]">Event Type</label>
           <select
             value={filters.eventType || ''}
             onChange={e => handleChange('eventType', e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full rounded-md border border-[#334155] bg-[#0f172a] px-3 py-2 text-sm text-white focus:border-[#ef4444] focus:outline-none focus:ring-1 focus:ring-[#ef4444]"
           >
             <option value="">All Event Types</option>
             {eventTypes.map(eventType => (
@@ -119,11 +119,11 @@ export default function FilterBar({ transactions, filters, onFilterChange }: Fil
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Wallet</label>
+          <label className="mb-1 block text-sm font-medium text-[#94a3b8]">Wallet</label>
           <select
             value={filters.wallet || ''}
             onChange={e => handleChange('wallet', e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full rounded-md border border-[#334155] bg-[#0f172a] px-3 py-2 text-sm text-white focus:border-[#ef4444] focus:outline-none focus:ring-1 focus:ring-[#ef4444]"
           >
             <option value="">All Wallets</option>
             {wallets.map(wallet => (
@@ -135,7 +135,7 @@ export default function FilterBar({ transactions, filters, onFilterChange }: Fil
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Month</label>
+          <label className="mb-1 block text-sm font-medium text-[#94a3b8]">Month</label>
           <input
             type="month"
             value={filters.month || ''}
@@ -151,12 +151,12 @@ export default function FilterBar({ transactions, filters, onFilterChange }: Fil
                 onFilterChange({ ...filters, month: undefined, startDate: undefined, endDate: undefined });
               }
             }}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full rounded-md border border-[#334155] bg-[#0f172a] px-3 py-2 text-sm text-white focus:border-[#ef4444] focus:outline-none focus:ring-1 focus:ring-[#ef4444]"
           />
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">Start Date</label>
+          <label className="mb-1 block text-sm font-medium text-[#94a3b8]">Start Date</label>
           <input
             type="date"
             value={filters.startDate || ''}
@@ -169,12 +169,12 @@ export default function FilterBar({ transactions, filters, onFilterChange }: Fil
                 handleChange('startDate', e.target.value);
               }
             }}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full rounded-md border border-[#334155] bg-[#0f172a] px-3 py-2 text-sm text-white focus:border-[#ef4444] focus:outline-none focus:ring-1 focus:ring-[#ef4444]"
           />
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">End Date</label>
+          <label className="mb-1 block text-sm font-medium text-[#94a3b8]">End Date</label>
           <input
             type="date"
             value={filters.endDate || ''}
@@ -186,14 +186,14 @@ export default function FilterBar({ transactions, filters, onFilterChange }: Fil
                 handleChange('endDate', e.target.value);
               }
             }}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full rounded-md border border-[#334155] bg-[#0f172a] px-3 py-2 text-sm text-white focus:border-[#ef4444] focus:outline-none focus:ring-1 focus:ring-[#ef4444]"
           />
         </div>
 
         <div className="flex items-end">
           <button
             onClick={() => onFilterChange({})}
-            className="w-full rounded-md bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-300"
+            className="w-full rounded-md bg-[#334155] px-4 py-2 text-sm font-medium text-white hover:bg-[#475569]"
           >
             Clear Filters
           </button>
@@ -202,18 +202,18 @@ export default function FilterBar({ transactions, filters, onFilterChange }: Fil
 
       {/* Monthly Totals Summary */}
       {(filters.month || filters.startDate || filters.endDate) && (
-        <div className="mt-4 grid grid-cols-1 gap-4 rounded-lg border border-blue-200 bg-blue-50 p-4 md:grid-cols-3">
+        <div className="mt-4 grid grid-cols-1 gap-4 rounded-lg border border-[#334155] bg-[#0f172a] p-4 md:grid-cols-3">
           <div>
-            <div className="text-sm font-medium text-blue-900">Total HBD</div>
-            <div className="text-2xl font-bold text-blue-700">{formatCurrency(monthlyTotals.totalHbd)}</div>
+            <div className="text-sm font-medium text-[#94a3b8]">Total HBD</div>
+            <div className="text-2xl font-bold text-[#ef4444]">{formatCurrency(monthlyTotals.totalHbd)}</div>
           </div>
           <div>
-            <div className="text-sm font-medium text-blue-900">Total Hive</div>
-            <div className="text-2xl font-bold text-blue-700">{formatCurrency(monthlyTotals.totalHive)}</div>
+            <div className="text-sm font-medium text-[#94a3b8]">Total Hive</div>
+            <div className="text-2xl font-bold text-[#ef4444]">{formatCurrency(monthlyTotals.totalHive)}</div>
           </div>
           <div>
-            <div className="text-sm font-medium text-blue-900">Total Spend</div>
-            <div className="text-2xl font-bold text-blue-700">{formatCurrency(monthlyTotals.totalSpend)}</div>
+            <div className="text-sm font-medium text-[#94a3b8]">Total Spend</div>
+            <div className="text-2xl font-bold text-[#ef4444]">{formatCurrency(monthlyTotals.totalSpend)}</div>
           </div>
         </div>
       )}

@@ -33,14 +33,14 @@ export default function PlanningPage() {
   if (!mounted || loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="text-gray-600">Loading content...</div>
+        <div className="text-[#94a3b8]">Loading content...</div>
       </div>
     );
   }
 
   if (!content) {
     return (
-      <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-800">
+      <div className="rounded-lg border border-[#ef4444]/50 bg-[#ef4444]/10 p-4 text-[#ef4444]">
         Unable to load content. Please try again later.
       </div>
     );
@@ -49,18 +49,18 @@ export default function PlanningPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-gray-900">Planning & Strategy</h1>
-        <p className="mt-2 text-lg text-gray-600">Value Plan strategy and planning documents</p>
+        <h1 className="text-4xl font-bold text-white">Planning & Strategy</h1>
+        <p className="mt-2 text-lg text-[#94a3b8]">Value Plan strategy and planning documents</p>
       </div>
 
-      <div className="mb-6 border-b border-gray-200">
+      <div className="mb-6 border-b border-[#334155]">
         <nav className="-mb-px flex space-x-8">
           <button
             onClick={() => setActiveTab('planning')}
             className={`whitespace-nowrap border-b-2 px-1 py-4 text-sm font-medium ${
               activeTab === 'planning'
-                ? 'border-blue-500 text-blue-600'
-                : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+                ? 'border-[#ef4444] text-[#ef4444]'
+                : 'border-transparent text-[#94a3b8] hover:border-[#64748b] hover:text-white'
             }`}
           >
             Planning
@@ -69,8 +69,8 @@ export default function PlanningPage() {
             onClick={() => setActiveTab('valuePlan')}
             className={`whitespace-nowrap border-b-2 px-1 py-4 text-sm font-medium ${
               activeTab === 'valuePlan'
-                ? 'border-blue-500 text-blue-600'
-                : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+                ? 'border-[#ef4444] text-[#ef4444]'
+                : 'border-transparent text-[#94a3b8] hover:border-[#64748b] hover:text-white'
             }`}
           >
             Value Plan Strategy
@@ -78,13 +78,13 @@ export default function PlanningPage() {
         </nav>
       </div>
 
-      <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+      <div className="rounded-lg border border-[#334155] bg-[#1e293b] p-6 shadow-sm">
         {activeTab === 'planning' ? (
           content.planning && content.planning.trim() ? (
             <MarkdownRenderer content={content.planning} />
           ) : (
-            <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4 text-yellow-800">
-              <h3 className="mb-2 font-semibold">No Planning Content Available</h3>
+            <div className="rounded-lg border border-[#475569] bg-[#1e293b] p-4 text-[#94a3b8]">
+              <h3 className="mb-2 font-semibold text-white">No Planning Content Available</h3>
               <p>Unable to load planning content. Please check the GitLab repository configuration or try again later.</p>
             </div>
           )
@@ -92,8 +92,8 @@ export default function PlanningPage() {
           content.valuePlan && content.valuePlan.trim() ? (
             <MarkdownRenderer content={content.valuePlan} />
           ) : (
-            <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4 text-yellow-800">
-              <h3 className="mb-2 font-semibold">No Value Plan Content Available</h3>
+            <div className="rounded-lg border border-[#475569] bg-[#1e293b] p-4 text-[#94a3b8]">
+              <h3 className="mb-2 font-semibold text-white">No Value Plan Content Available</h3>
               <p>Unable to load Value Plan strategy content. Please check the GitLab repository configuration or try again later.</p>
             </div>
           )

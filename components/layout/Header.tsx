@@ -32,13 +32,13 @@ export default function Header() {
   if (!mounted) {
     // Return a static version during SSR to prevent hydration mismatch
     return (
-      <header className="border-b border-gray-200 bg-white shadow-sm">
+      <header className="border-b border-[#334155] bg-[#1e293b] shadow-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center">
               <Link 
                 href="/" 
-                className="text-xl font-bold text-gray-900"
+                className="text-xl font-bold text-white"
                 suppressHydrationWarning
               >
                 Value Plan Dashboard
@@ -49,7 +49,7 @@ export default function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                  className="rounded-md px-3 py-2 text-sm font-medium text-[#94a3b8] hover:bg-[#334155] hover:text-white"
                   suppressHydrationWarning
                 >
                   {link.label}
@@ -57,7 +57,7 @@ export default function Header() {
               ))}
             </nav>
             <button
-              className="md:hidden rounded-md p-2 text-gray-700 hover:bg-gray-100"
+              className="md:hidden rounded-md p-2 text-[#94a3b8] hover:bg-[#334155]"
               aria-label="Toggle menu"
             >
               <svg
@@ -79,13 +79,13 @@ export default function Header() {
   }
 
   return (
-    <header className="border-b border-gray-200 bg-white shadow-sm">
+    <header className="border-b border-[#334155] bg-[#1e293b] shadow-sm">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
             <Link 
               href="/" 
-              className="text-xl font-bold text-gray-900"
+              className="text-xl font-bold text-white"
               suppressHydrationWarning
             >
               Value Plan Dashboard
@@ -100,8 +100,8 @@ export default function Header() {
                 href={link.href}
                 className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
                   isActive(link.href)
-                    ? 'bg-blue-50 text-blue-700'
-                    : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                    ? 'bg-[#e11d48] text-white'
+                    : 'text-[#94a3b8] hover:bg-[#334155] hover:text-white'
                 }`}
                 suppressHydrationWarning
               >
@@ -113,7 +113,7 @@ export default function Header() {
           {/* Mobile menu button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden rounded-md p-2 text-gray-700 hover:bg-gray-100"
+            className="md:hidden rounded-md p-2 text-[#94a3b8] hover:bg-[#334155]"
             aria-label="Toggle menu"
           >
             <svg
@@ -136,7 +136,7 @@ export default function Header() {
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <nav className="border-t border-gray-200 py-4 md:hidden">
+          <nav className="border-t border-[#334155] py-4 md:hidden">
             <div className="flex flex-col space-y-1">
               {navLinks.map(link => (
                 <Link
@@ -145,8 +145,8 @@ export default function Header() {
                   onClick={() => setMobileMenuOpen(false)}
                   className={`rounded-md px-3 py-2 text-sm font-medium ${
                     isActive(link.href)
-                      ? 'bg-blue-50 text-blue-700'
-                      : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                      ? 'bg-[#e11d48] text-white'
+                      : 'text-[#94a3b8] hover:bg-[#334155] hover:text-white'
                   }`}
                   suppressHydrationWarning
                 >

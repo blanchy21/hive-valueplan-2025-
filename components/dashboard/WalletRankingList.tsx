@@ -10,35 +10,35 @@ interface WalletRankingListProps {
 export default function WalletRankingList({ data, title = 'Top Funded Accounts' }: WalletRankingListProps) {
   if (!data || data.length === 0) {
     return (
-      <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-        <h3 className="mb-4 text-lg font-semibold text-gray-900">{title}</h3>
-        <p className="text-gray-500">No data available</p>
+      <div className="rounded-lg border border-[#334155] bg-[#1e293b] p-6 shadow-sm">
+        <h3 className="mb-4 text-lg font-semibold text-white">{title}</h3>
+        <p className="text-[#94a3b8]">No data available</p>
       </div>
     );
   }
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-      <h3 className="mb-4 text-lg font-semibold text-gray-900">{title}</h3>
+    <div className="rounded-lg border border-[#334155] bg-[#1e293b] p-6 shadow-sm">
+      <h3 className="mb-4 text-lg font-semibold text-white">{title}</h3>
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-gray-200">
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Rank</th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Name</th>
-              <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">Total (HBD)</th>
+            <tr className="border-b border-[#334155]">
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#94a3b8]">Rank</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#94a3b8]">Name</th>
+              <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-[#94a3b8]">Total (HBD)</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200 bg-white">
+          <tbody className="divide-y divide-[#334155]">
             {data.map((item, index) => (
-              <tr key={item.name} className="hover:bg-gray-50">
-                <td className="whitespace-nowrap px-4 py-3 text-sm font-medium text-gray-900">
+              <tr key={item.name} className="hover:bg-[#0f172a]">
+                <td className="whitespace-nowrap px-4 py-3 text-sm font-medium text-white">
                   #{index + 1}
                 </td>
-                <td className="whitespace-nowrap px-4 py-3 text-sm text-gray-900">
+                <td className="whitespace-nowrap px-4 py-3 text-sm text-white">
                   {item.name}
                 </td>
-                <td className="whitespace-nowrap px-4 py-3 text-right text-sm font-semibold text-gray-900">
+                <td className="whitespace-nowrap px-4 py-3 text-right text-sm font-semibold text-[#ef4444]">
                   {formatCurrency(item.value, 2)}
                 </td>
               </tr>

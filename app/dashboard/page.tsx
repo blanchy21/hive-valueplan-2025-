@@ -32,14 +32,14 @@ export default function DashboardPage() {
   if (!mounted || loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="text-gray-600">Loading dashboard...</div>
+        <div className="text-[#94a3b8]">Loading dashboard...</div>
       </div>
     );
   }
 
   if (!metrics) {
     return (
-      <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-800">
+      <div className="rounded-lg border border-[#ef4444]/50 bg-[#ef4444]/10 p-4 text-[#ef4444]">
         Unable to load dashboard data. Please try again later.
       </div>
     );
@@ -70,8 +70,8 @@ export default function DashboardPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-gray-900">Value Plan Dashboard</h1>
-        <p className="mt-2 text-lg text-gray-600">Interactive analytics and visualizations</p>
+        <h1 className="text-4xl font-bold text-white">Value Plan Dashboard</h1>
+        <p className="mt-2 text-lg text-[#94a3b8]">Interactive analytics and visualizations</p>
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -88,7 +88,7 @@ export default function DashboardPage() {
         </ChartCard>
 
         <ChartCard title="Spending by Event Project">
-          <div className="mb-3 rounded-md bg-blue-50 p-2 text-xs text-blue-700">
+          <div className="mb-3 rounded-md bg-[#1e293b] border border-[#334155] p-2 text-xs text-[#94a3b8]">
             <strong>Note:</strong> These totals show funding for each project across all wallets. A wallet may appear in multiple projects, and project names must match exactly.
           </div>
           <SpendingChart data={eventProjectData} title="Event Project Spending" />
@@ -110,33 +110,33 @@ export default function DashboardPage() {
           data={walletData} 
           title="Top Funded Wallets"
         />
-        <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
-          <div className="font-semibold mb-2">📊 Understanding Wallet vs Project Totals</div>
+        <div className="mt-4 rounded-lg border border-[#475569] bg-[#1e293b] p-4 text-sm text-[#94a3b8]">
+          <div className="font-semibold mb-2 text-white">📊 Understanding Wallet vs Project Totals</div>
           <div className="space-y-1 text-xs">
             <p><strong>Wallet Totals:</strong> Show the total amount received by each wallet across <em>all projects</em> they&apos;re involved in.</p>
             <p><strong>Project Totals:</strong> Show the total amount spent on each project across <em>all wallets</em> that received funding for that project.</p>
-            <p className="mt-2 text-amber-700"><strong>Why they differ:</strong> A wallet can receive funding for multiple projects (e.g., SWC, SWC/B2B), and a project can have funding sent to multiple wallets. Project names must match exactly (case-sensitive).</p>
+            <p className="mt-2 text-[#94a3b8]"><strong>Why they differ:</strong> A wallet can receive funding for multiple projects (e.g., SWC, SWC/B2B), and a project can have funding sent to multiple wallets. Project names must match exactly (case-sensitive).</p>
           </div>
         </div>
       </div>
 
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-          <h3 className="mb-4 text-lg font-semibold text-gray-900">Spending Breakdown (Excludes Loans & Refunds)</h3>
-          <div className="mb-4 rounded-md bg-blue-50 p-3 text-xs text-blue-800">
+        <div className="rounded-lg border border-[#334155] bg-[#1e293b] p-6 shadow-sm">
+          <h3 className="mb-4 text-lg font-semibold text-white">Spending Breakdown (Excludes Loans & Refunds)</h3>
+          <div className="mb-4 rounded-md bg-[#0f172a] border border-[#334155] p-3 text-xs text-[#94a3b8]">
             <strong>Note:</strong> These totals match the charts above and exclude loans and refunds.
           </div>
           <div className="space-y-4">
             <div>
               <div className="mb-2 flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-700">HBD Spending</span>
-                <span className="text-lg font-bold text-blue-600">
+                <span className="text-sm font-medium text-[#94a3b8]">HBD Spending</span>
+                <span className="text-lg font-bold text-[#ef4444]">
                   {metrics.totalHbd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </span>
               </div>
-              <div className="h-2 w-full overflow-hidden rounded-full bg-gray-200">
+              <div className="h-2 w-full overflow-hidden rounded-full bg-[#0f172a]">
                 <div
-                  className="h-full bg-blue-600"
+                  className="h-full bg-[#ef4444]"
                   style={{
                     width: `${metrics.combinedTotalHbd > 0 ? (metrics.totalHbd / metrics.combinedTotalHbd) * 100 : 0}%`,
                   }}
@@ -145,27 +145,27 @@ export default function DashboardPage() {
             </div>
             <div>
               <div className="mb-2 flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-700">Hive Spending (HBD equivalent)</span>
-                <span className="text-lg font-bold text-green-600">
+                <span className="text-sm font-medium text-[#94a3b8]">Hive Spending (HBD equivalent)</span>
+                <span className="text-lg font-bold text-green-400">
                   {(metrics.combinedTotalHbd - metrics.totalHbd).toLocaleString('en-US', {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                   })}
                 </span>
               </div>
-              <div className="h-2 w-full overflow-hidden rounded-full bg-gray-200">
+              <div className="h-2 w-full overflow-hidden rounded-full bg-[#0f172a]">
                 <div
-                  className="h-full bg-green-600"
+                  className="h-full bg-green-400"
                   style={{
                     width: `${metrics.combinedTotalHbd > 0 ? ((metrics.combinedTotalHbd - metrics.totalHbd) / metrics.combinedTotalHbd) * 100 : 0}%`,
                   }}
                 />
               </div>
             </div>
-            <div className="mt-4 border-t border-gray-200 pt-4">
+            <div className="mt-4 border-t border-[#334155] pt-4">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-semibold text-gray-700">Total Spending</span>
-                <span className="text-lg font-bold text-gray-900">
+                <span className="text-sm font-semibold text-[#94a3b8]">Total Spending</span>
+                <span className="text-lg font-bold text-white">
                   {metrics.combinedTotalHbd.toLocaleString('en-US', {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
@@ -176,31 +176,31 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-          <h3 className="mb-4 text-lg font-semibold text-gray-900">Key Statistics</h3>
+        <div className="rounded-lg border border-[#334155] bg-[#1e293b] p-6 shadow-sm">
+          <h3 className="mb-4 text-lg font-semibold text-white">Key Statistics</h3>
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-gray-700">Total Categories</span>
-              <span className="font-semibold text-gray-900">{Object.keys(metrics.spendingByCategory).length}</span>
+              <span className="text-[#94a3b8]">Total Categories</span>
+              <span className="font-semibold text-white">{Object.keys(metrics.spendingByCategory).length}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-gray-700">Total Countries</span>
-              <span className="font-semibold text-gray-900">{Object.keys(metrics.spendingByCountry).length}</span>
+              <span className="text-[#94a3b8]">Total Countries</span>
+              <span className="font-semibold text-white">{Object.keys(metrics.spendingByCountry).length}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-gray-700">Event Types</span>
-              <span className="font-semibold text-gray-900">{Object.keys(metrics.spendingByEventType).length}</span>
+              <span className="text-[#94a3b8]">Event Types</span>
+              <span className="font-semibold text-white">{Object.keys(metrics.spendingByEventType).length}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-gray-700">Event Projects</span>
-              <span className="font-semibold text-gray-900">
+              <span className="text-[#94a3b8]">Event Projects</span>
+              <span className="font-semibold text-white">
                 {Object.entries(metrics.spendingByEventProject)
                   .filter(([name, value]) => name && name.trim() !== '' && name !== 'Unknown' && value > 0).length}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-gray-700">Months Tracked</span>
-              <span className="font-semibold text-gray-900">{metrics.monthlySpending.length}</span>
+              <span className="text-[#94a3b8]">Months Tracked</span>
+              <span className="font-semibold text-white">{metrics.monthlySpending.length}</span>
             </div>
           </div>
         </div>
